@@ -8,7 +8,6 @@ import intelligent_bank_msa.bankbookservice.service.BankBookService;
 import intelligent_bank_msa.bankbookservice.utility.BankBookMapper;
 import intelligent_bank_msa.bankbookservice.utility.BankBookPassword;
 import intelligent_bank_msa.bankbookservice.utility.CommonUtils;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
