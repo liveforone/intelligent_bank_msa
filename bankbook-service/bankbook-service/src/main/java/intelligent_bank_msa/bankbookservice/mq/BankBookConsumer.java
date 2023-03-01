@@ -20,78 +20,80 @@ public class BankBookConsumer {
     private final BankBookRepository bankBookRepository;
     private final BankBookProducer bankBookProducer;
 
-    @KafkaListener(topics = "request-bankbook-detail")
-    public void requestBankBookDetail(String kafkaMessage) {
-        log.info("Consumer receive Kafka Message -> " + kafkaMessage);
+    private static final String KAFKA_RECEIVE_LOG = "Consumer receive Kafka Message -> ";
 
-        JsonObject jsonMessage = JsonParser
+    private JsonObject parseKafkaMessage(String kafkaMessage) {
+        return JsonParser
                 .parseString(kafkaMessage)
                 .getAsJsonObject();
+    }
+
+    private KafkaErrorDto makeErrorDto(String errorMessage) {
+        return KafkaErrorDto.builder()
+                .errorMessage(errorMessage)
+                .build();
+    }
+
+    @KafkaListener(topics = Topic.REQUEST_BANKBOOK_DETAIL)
+    public void requestBankBookDetail(String kafkaMessage) {
+        log.info(KAFKA_RECEIVE_LOG + kafkaMessage);
+
+        JsonObject jsonMessage = parseKafkaMessage(kafkaMessage);
         String bankBookNum = jsonMessage.get("bankBookNum").getAsString();
 
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            String topic = "request-bankbook-detail";
             String errorMessage = "통장이 존재하지 않습니다.";
+            KafkaErrorDto kafkaErrorDto = makeErrorDto(errorMessage);
 
-            KafkaErrorDto kafkaErrorDto = KafkaErrorDto.builder()
-                    .errorMessage(errorMessage)
-                    .build();
-
-            bankBookProducer.sendErrorMessage(topic, kafkaErrorDto);
+            bankBookProducer.sendErrorMessage(
+                    Topic.RESPONSE_BANKBOOK_DETAIL,
+                    kafkaErrorDto
+            );
         } else {
-            bankBookProducer.sendBankBookDetail(BankBookMapper.entityToDtoDetail(bankBook));
+            bankBookProducer.sendBankBookDetail(
+                    Topic.RESPONSE_BANKBOOK_DETAIL,
+                    BankBookMapper.entityToDtoDetail(bankBook)
+            );
         }
     }
 
-    @KafkaListener(topics = "increase-balance")
+    @KafkaListener(topics = Topic.INCREASE_BALANCE)
     public void increaseBalance(String kafkaMessage) {
-        log.info("Consumer receive Kafka Message -> " + kafkaMessage);
+        log.info(KAFKA_RECEIVE_LOG + kafkaMessage);
 
-        JsonObject jsonMessage = JsonParser
-                .parseString(kafkaMessage)
-                .getAsJsonObject();
+        JsonObject jsonMessage = parseKafkaMessage(kafkaMessage);
         String bankBookNum = jsonMessage.get("bankBookNum").getAsString();
         long inputMoney = jsonMessage.get("inputMoney").getAsLong();
 
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            String topic = "request-bankbook-detail";
             String errorMessage = "통장이 존재하지 않습니다.";
+            KafkaErrorDto kafkaErrorDto = makeErrorDto(errorMessage);
 
-            KafkaErrorDto kafkaErrorDto = KafkaErrorDto.builder()
-                    .errorMessage(errorMessage)
-                    .build();
-
-            bankBookProducer.sendErrorMessage(topic, kafkaErrorDto);
+            bankBookProducer.sendErrorMessage(Topic.INCREASE_BALANCE, kafkaErrorDto);
         } else {
             bankBookRepository.increaseBalance(bankBookNum, inputMoney);
         }
     }
 
-    @KafkaListener(topics = "decrease-balance")
+    @KafkaListener(topics = Topic.DECREASE_BALANCE)
     public void decreaseBalance(String kafkaMessage) {
-        log.info("Consumer receive Kafka Message -> " + kafkaMessage);
+        log.info(KAFKA_RECEIVE_LOG + kafkaMessage);
 
-        JsonObject jsonMessage = JsonParser
-                .parseString(kafkaMessage)
-                .getAsJsonObject();
+        JsonObject jsonMessage = parseKafkaMessage(kafkaMessage);
         String bankBookNum = jsonMessage.get("bankBookNum").getAsString();
         long inputMoney = jsonMessage.get("inputMoney").getAsLong();
 
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            String topic = "request-bankbook-detail";
             String errorMessage = "통장이 존재하지 않습니다.";
+            KafkaErrorDto kafkaErrorDto = makeErrorDto(errorMessage);
 
-            KafkaErrorDto kafkaErrorDto = KafkaErrorDto.builder()
-                    .errorMessage(errorMessage)
-                    .build();
-
-            bankBookProducer.sendErrorMessage(topic, kafkaErrorDto);
+            bankBookProducer.sendErrorMessage(Topic.DECREASE_BALANCE, kafkaErrorDto);
         } else {
             bankBookRepository.decreaseBalance(bankBookNum, inputMoney);
         }

@@ -23,9 +23,7 @@ public class BankBookProducer {
         log.info("BankBook Producer send Error Message");
     }
 
-    public void sendBankBookDetail(BankBookResponse bankBookResponse) {
-        String topic = "response-bankbook-detail";
-
+    public void sendBankBookDetail(String topic, BankBookResponse bankBookResponse) {
         Gson gson = new Gson();
         String jsonOrder = gson.toJson(bankBookResponse);
 
