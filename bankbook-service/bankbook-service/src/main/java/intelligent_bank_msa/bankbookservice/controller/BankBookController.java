@@ -26,8 +26,8 @@ public class BankBookController {
 
     private final BankBookService bankBookService;
 
-    @GetMapping("/my-bank")
-    public ResponseEntity<?> myBank(@RequestBody String email) {
+    @GetMapping("/my-bank/{email}")
+    public ResponseEntity<?> myBank(@PathVariable String email) {
         BankBook bankBook = bankBookService.getBankBookByEmail(email);
 
         if (CommonUtils.isNull(bankBook)) {
