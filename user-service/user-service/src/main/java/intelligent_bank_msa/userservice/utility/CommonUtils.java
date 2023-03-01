@@ -35,7 +35,7 @@ public class CommonUtils {
             String inputUrl,
             HttpServletRequest request
     ) {
-        String url = "http://localhost:8080" + inputUrl;
+        String url = "http://localhost:8000" + inputUrl;
         String token = JwtAuthenticationFilter.resolveToken(request);
 
         HttpHeaders httpHeaders = new HttpHeaders();
