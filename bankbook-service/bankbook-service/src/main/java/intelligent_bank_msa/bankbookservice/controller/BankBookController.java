@@ -48,21 +48,24 @@ public class BankBookController {
     @LogExecutionTime
     public ResponseEntity<?> postBankBook(
             @RequestBody @Valid BankBookRequest bankBookRequest,
-            BindingResult bindingResult,
-            HttpServletRequest request
+            BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
             String errorMessage = Objects
                     .requireNonNull(bindingResult.getFieldError())
                     .getDefaultMessage();
-            return ResponseEntity.ok(errorMessage);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(errorMessage);
         }
 
         String email = bankBookRequest.getEmail();
         BankBook bankBook = bankBookService.getBankBookByEmail(email);
 
         if (!CommonUtils.isNull(bankBook)) {
-            return ResponseEntity.ok("이미 통장이 존재합니다.\n 통장은 '하나'만 개설 가능합니다.");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("이미 통장이 존재합니다.\n 통장은 '하나'만 개설 가능합니다.");
         }
 
         bankBookService.saveBankBook(bankBookRequest);
