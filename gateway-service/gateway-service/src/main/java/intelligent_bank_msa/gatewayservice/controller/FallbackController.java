@@ -22,4 +22,11 @@ public class FallbackController {
                 + "\n이용에 불편을 드려 죄송합니다.";
         return Mono.just(errorMessage);
     }
+
+    @GetMapping("/record")
+    public Mono<String> fallbackRecord() {
+        String errorMessage = "거래내역 서비스의 장애로 접근이 불가능합니다."
+                + "\n이용에 불편을 드려 죄송합니다.";
+        return Mono.just(errorMessage);
+    }
 }
