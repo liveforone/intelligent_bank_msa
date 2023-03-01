@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import intelligent_bank_msa.bankbookservice.dto.KafkaErrorDto;
 import intelligent_bank_msa.bankbookservice.model.BankBook;
+import intelligent_bank_msa.bankbookservice.mq.constant.KafkaLog;
+import intelligent_bank_msa.bankbookservice.mq.constant.Topic;
 import intelligent_bank_msa.bankbookservice.repository.BankBookRepository;
 import intelligent_bank_msa.bankbookservice.utility.BankBookMapper;
 import intelligent_bank_msa.bankbookservice.utility.CommonUtils;
@@ -20,8 +22,6 @@ public class BankBookConsumer {
     private final BankBookRepository bankBookRepository;
     private final BankBookProducer bankBookProducer;
 
-    private static final String KAFKA_RECEIVE_LOG = "Consumer receive Kafka Message -> ";
-
     private JsonObject parseKafkaMessage(String kafkaMessage) {
         return JsonParser
                 .parseString(kafkaMessage)
@@ -36,7 +36,7 @@ public class BankBookConsumer {
 
     @KafkaListener(topics = Topic.REQUEST_BANKBOOK_DETAIL)
     public void requestBankBookDetail(String kafkaMessage) {
-        log.info(KAFKA_RECEIVE_LOG + kafkaMessage);
+        log.info(KafkaLog.KAFKA_RECEIVE_LOG + kafkaMessage);
 
         JsonObject jsonMessage = parseKafkaMessage(kafkaMessage);
         String bankBookNum = jsonMessage.get("bankBookNum").getAsString();
@@ -61,7 +61,7 @@ public class BankBookConsumer {
 
     @KafkaListener(topics = Topic.INCREASE_BALANCE)
     public void increaseBalance(String kafkaMessage) {
-        log.info(KAFKA_RECEIVE_LOG + kafkaMessage);
+        log.info(KafkaLog.KAFKA_RECEIVE_LOG + kafkaMessage);
 
         JsonObject jsonMessage = parseKafkaMessage(kafkaMessage);
         String bankBookNum = jsonMessage.get("bankBookNum").getAsString();
@@ -81,7 +81,7 @@ public class BankBookConsumer {
 
     @KafkaListener(topics = Topic.DECREASE_BALANCE)
     public void decreaseBalance(String kafkaMessage) {
-        log.info(KAFKA_RECEIVE_LOG + kafkaMessage);
+        log.info(KafkaLog.KAFKA_RECEIVE_LOG + kafkaMessage);
 
         JsonObject jsonMessage = parseKafkaMessage(kafkaMessage);
         String bankBookNum = jsonMessage.get("bankBookNum").getAsString();
