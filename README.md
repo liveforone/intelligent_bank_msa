@@ -1,3 +1,8 @@
+yml에서 path랑 method잘 집어넣기
+이중에서 authorizaionfilter 안걸꺼면 잘 빼기
+후에 fallback controller 에 컨트롤러 넣기
+카프카는 컨슈머 그룹아이디 intelligentBankGroup 로 지정하기
+에러는 아래와 같이 처리한다.
 requet dto 키를 이용해서 해당 값이 없다면
 errordto를 꺼내서 메세지를 바인딩 받으면된다.
 
