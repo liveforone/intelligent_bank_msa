@@ -7,6 +7,8 @@ record를 저장한 후에 record kafka는 각각 송금과 atm으로 해당 값
 
 
 토픽은 문서화 해서 저장하기
+위키와 전체 문서화
+db 인덱스 걸기
 
 
 yml에서 path랑 method잘 집어넣기
