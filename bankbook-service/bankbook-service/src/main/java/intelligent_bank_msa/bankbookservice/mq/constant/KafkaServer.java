@@ -1,4 +1,4 @@
-package intelligent_bank_msa.bankbookservice.mq;
+package intelligent_bank_msa.bankbookservice.mq.constant;
 
 public class KafkaServer {
 

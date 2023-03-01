@@ -1,6 +1,6 @@
 package intelligent_bank_msa.bankbookservice.config;
 
-import intelligent_bank_msa.bankbookservice.mq.KafkaServer;
+import intelligent_bank_msa.bankbookservice.mq.constant.KafkaServer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
