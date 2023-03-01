@@ -59,30 +59,19 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-#        - id: catalog-service
-#          uri: lb://CATALOG-SERVICE
-#          predicates:
-#            - Path=/catalog-service/**
-#          filters:
-#            - RemoveRequestHeader=Cookie
-#            - RewritePath=/catalog-service/(?<segment>.*), /$\{segment}
-#            - AuthorizationHeaderFilter
-#            - name: CircuitBreaker
-#              args:
-#                name: catalog-service
-#                fallbackuri: forward:/fallback/catalog
-#        - id: order-service
-#          uri: lb://ORDER-SERVICE
-#          predicates:
-#            - Path=/order-service/**
-#          filters:
-#            - RemoveRequestHeader=Cookie
-#            - RewritePath=/order-service/(?<segment>.*), /$\{segment}
-#            - AuthorizationHeaderFilter
-#            - name: CircuitBreaker
-#              args:
-#                name: order-service
-#                fallbackuri: forward:/fallback/order
+        - id: bankbook-service
+          uri: lb://BANKBOOK-SERVICE
+          predicates:
+            - Path=/bankbook-service/**
+            - Method=GET,POST
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+            - name: CircuitBreaker
+              args:
+                name: bankbook-service
+                fallbackuri: forward:/fallback/bankbook
 
 management:
   endpoints:
