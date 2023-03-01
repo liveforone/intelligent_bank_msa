@@ -45,6 +45,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
 def querydslDir = "$buildDir/generated/querydsl"
 
 querydsl {
@@ -58,12 +64,6 @@ sourceSets {
 
 compileQuerydsl{
 	options.annotationProcessorPath = configurations.querydsl
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
 }
 
 tasks.named('test') {
