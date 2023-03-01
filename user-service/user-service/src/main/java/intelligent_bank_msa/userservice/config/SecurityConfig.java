@@ -37,8 +37,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(
                                 "/",
-                                "/member/signup",
-                                "/member/login",
+                                "/signup",
+                                "/login",
                                 "/actuator/**"
                         ).permitAll()
                         .requestMatchers(
