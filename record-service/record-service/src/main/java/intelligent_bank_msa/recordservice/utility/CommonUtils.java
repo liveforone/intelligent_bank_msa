@@ -49,12 +49,4 @@ public class CommonUtils {
                 .headers(httpHeaders)
                 .build();
     }
-
-    public static int createNowYear() {
-        return LocalDate.now().getYear();
-    }
-
-    public static Month createNowMonth() {
-        return LocalDate.now().getMonth();
-    }
 }
