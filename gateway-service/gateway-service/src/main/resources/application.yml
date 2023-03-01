@@ -27,7 +27,7 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
-            - Method=GET
+            - Method=GET,PATCH,DELETE
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
@@ -52,26 +52,25 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+        - id: bankbook-service
+          uri: lb://BANKBOOK-SERVICE
+          predicates:
+            - Path=/bankbook-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/bankbook-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+            - name: CircuitBreaker
+              args:
+                name: bankbook-service
+                fallbackuri: forward:/fallback/bankbook
         - id: atm-service
           uri: lb://ATM-SERVICE
           predicates:
             - Path=/atm-service/**
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: bankbook-service
-          uri: lb://BANKBOOK-SERVICE
-          predicates:
-            - Path=/bankbook-service/**
-            - Method=GET,POST
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-            - AuthorizationHeaderFilter
-            - name: CircuitBreaker
-              args:
-                name: bankbook-service
-                fallbackuri: forward:/fallback/bankbook
+            - RewritePath=/atm-service/(?<segment>.*), /$\{segment}
 
 management:
   endpoints:
