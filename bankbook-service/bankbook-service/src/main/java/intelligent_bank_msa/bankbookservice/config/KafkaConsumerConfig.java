@@ -1,5 +1,6 @@
 package intelligent_bank_msa.bankbookservice.config;
 
+import intelligent_bank_msa.bankbookservice.mq.KafkaServer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -16,11 +17,13 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
+    private static final String CONSUMER_GROUP_ID = "intelligentBankGroup";
+
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         Map<String, Object> properties = new HashMap<>();
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, "intelligentBankGroup");
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaServer.KAFKA_SERVER_POST);
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, CONSUMER_GROUP_ID);
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 
