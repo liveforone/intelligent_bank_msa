@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import intelligent_bank_msa.bankbookservice.dto.KafkaErrorDto;
 import intelligent_bank_msa.bankbookservice.model.BankBook;
 import intelligent_bank_msa.bankbookservice.mq.constant.KafkaLog;
+import intelligent_bank_msa.bankbookservice.mq.constant.KafkaMessage;
 import intelligent_bank_msa.bankbookservice.mq.constant.Topic;
 import intelligent_bank_msa.bankbookservice.repository.BankBookRepository;
 import intelligent_bank_msa.bankbookservice.utility.BankBookMapper;
@@ -28,9 +29,10 @@ public class BankBookConsumer {
                 .getAsJsonObject();
     }
 
-    private KafkaErrorDto makeErrorDto(String errorMessage) {
+    private KafkaErrorDto makeErrorDto() {
+        String NO_BANKBOOK_ERROR_MESSAGE = "통장이 존재하지 않습니다.";
         return KafkaErrorDto.builder()
-                .errorMessage(errorMessage)
+                .errorMessage(NO_BANKBOOK_ERROR_MESSAGE)
                 .build();
     }
 
@@ -39,17 +41,14 @@ public class BankBookConsumer {
         log.info(KafkaLog.KAFKA_RECEIVE_LOG + kafkaMessage);
 
         JsonObject jsonMessage = parseKafkaMessage(kafkaMessage);
-        String bankBookNum = jsonMessage.get("bankBookNum").getAsString();
+        String bankBookNum = jsonMessage.get(KafkaMessage.BANKBOOK_NUM).getAsString();
 
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            String errorMessage = "통장이 존재하지 않습니다.";
-            KafkaErrorDto kafkaErrorDto = makeErrorDto(errorMessage);
-
             bankBookProducer.sendErrorMessage(
                     Topic.RESPONSE_BANKBOOK_DETAIL,
-                    kafkaErrorDto
+                    makeErrorDto()
             );
         } else {
             bankBookProducer.sendBankBookDetail(
@@ -59,41 +58,35 @@ public class BankBookConsumer {
         }
     }
 
-    @KafkaListener(topics = Topic.INCREASE_BALANCE)
+    @KafkaListener(topics = Topic.REQUEST_INCREASE_BALANCE)
     public void increaseBalance(String kafkaMessage) {
         log.info(KafkaLog.KAFKA_RECEIVE_LOG + kafkaMessage);
 
         JsonObject jsonMessage = parseKafkaMessage(kafkaMessage);
-        String bankBookNum = jsonMessage.get("bankBookNum").getAsString();
-        long inputMoney = jsonMessage.get("inputMoney").getAsLong();
+        String bankBookNum = jsonMessage.get(KafkaMessage.BANKBOOK_NUM).getAsString();
+        long inputMoney = jsonMessage.get(KafkaMessage.INPUT_MONEY).getAsLong();
 
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            String errorMessage = "통장이 존재하지 않습니다.";
-            KafkaErrorDto kafkaErrorDto = makeErrorDto(errorMessage);
-
-            bankBookProducer.sendErrorMessage(Topic.INCREASE_BALANCE, kafkaErrorDto);
+            bankBookProducer.sendErrorMessage(Topic.RESPONSE_INCREASE_BALANCE, makeErrorDto());
         } else {
             bankBookRepository.increaseBalance(bankBookNum, inputMoney);
         }
     }
 
-    @KafkaListener(topics = Topic.DECREASE_BALANCE)
+    @KafkaListener(topics = Topic.REQUEST_DECREASE_BALANCE)
     public void decreaseBalance(String kafkaMessage) {
         log.info(KafkaLog.KAFKA_RECEIVE_LOG + kafkaMessage);
 
         JsonObject jsonMessage = parseKafkaMessage(kafkaMessage);
-        String bankBookNum = jsonMessage.get("bankBookNum").getAsString();
-        long inputMoney = jsonMessage.get("inputMoney").getAsLong();
+        String bankBookNum = jsonMessage.get(KafkaMessage.BANKBOOK_NUM).getAsString();
+        long inputMoney = jsonMessage.get(KafkaMessage.INPUT_MONEY).getAsLong();
 
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            String errorMessage = "통장이 존재하지 않습니다.";
-            KafkaErrorDto kafkaErrorDto = makeErrorDto(errorMessage);
-
-            bankBookProducer.sendErrorMessage(Topic.DECREASE_BALANCE, kafkaErrorDto);
+            bankBookProducer.sendErrorMessage(Topic.RESPONSE_DECREASE_BALANCE, makeErrorDto());
         } else {
             bankBookRepository.decreaseBalance(bankBookNum, inputMoney);
         }
