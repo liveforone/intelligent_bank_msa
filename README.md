@@ -1,4 +1,13 @@
+record를 만든 후에 송금과 atm은 각각 record를 똑같이 저장하는 read-only db를 만든다.
+복제 방법은 record가 추가 될때마다 record로 카프카를 통해 보내고,
+record를 저장한 후에 record kafka는 각각 송금과 atm으로 해당 값을 전달하여 저장시킨다.
+약간 희안한 구조로 되어있는데, 이는 복제 db먼저 저장하는 것이 아닌 진짜 crud db인 원본 record에 먼저 저장하고 복제 db(read-only db)에는 비동기로 처리하여 저장하는 것이다.
+물론 atm과 송금 모두 jpa는 필요로 한다.(저장해야해서)
+다만 절대로 read이외의 쿼리를 날리지 않는다.
+
+
 토픽은 문서화 해서 저장하기
+
 
 yml에서 path랑 method잘 집어넣기
 이중에서 authorizaionfilter 안걸꺼면 잘 빼기
