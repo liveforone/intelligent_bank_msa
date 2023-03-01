@@ -1,3 +1,5 @@
+토픽은 문서화 해서 저장하기
+
 yml에서 path랑 method잘 집어넣기
 이중에서 authorizaionfilter 안걸꺼면 잘 빼기
 후에 fallback controller 에 컨트롤러 넣기
