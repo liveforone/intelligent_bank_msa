@@ -1,3 +1,12 @@
+record 이외의 송금과 atm에 commonutils에 넣는다.
+public static int createNowYear() {
+        return LocalDate.now().getYear();
+    }
+
+    public static Month createNowMonth() {
+        return LocalDate.now().getMonth();
+    }
+
 record를 만든 후에 송금과 atm은 각각 record를 똑같이 저장하는 read-only db를 만든다.
 복제 방법은 record가 추가 될때마다 record로 카프카를 통해 보내고,
 record를 저장한 후에 record kafka는 각각 송금과 atm으로 해당 값을 전달하여 저장시킨다.
