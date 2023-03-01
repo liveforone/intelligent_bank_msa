@@ -8,6 +8,7 @@ import intelligent_bank_msa.userservice.service.MemberService;
 import intelligent_bank_msa.userservice.utility.MemberMapper;
 import intelligent_bank_msa.userservice.validator.MemberPasswordValidator;
 import intelligent_bank_msa.userservice.validator.MemberValidator;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,7 +74,8 @@ public class MemberController {
     @PostMapping("/member/login")
     public ResponseEntity<?> login(
             @RequestBody @Valid MemberLoginRequest memberLoginRequest,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            HttpServletResponse response
     ) {
         if (bindingResult.hasErrors()) {
             String errorMessage = Objects
@@ -85,7 +87,10 @@ public class MemberController {
         try {
             TokenInfo tokenInfo = memberService.login(memberLoginRequest);
             log.info("로그인 성공");
-            return ResponseEntity.ok(tokenInfo);
+
+            response.addHeader("access-token", tokenInfo.getAccessToken());
+            response.addHeader("refresh-token", tokenInfo.getRefreshToken());
+            return ResponseEntity.ok("로그인에 성공하였습니다.");
         } catch (BadCredentialsException exception) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
