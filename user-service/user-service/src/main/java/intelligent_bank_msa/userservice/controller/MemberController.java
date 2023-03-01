@@ -49,7 +49,9 @@ public class MemberController {
             String errorMessage = Objects
                     .requireNonNull(bindingResult.getFieldError())
                     .getDefaultMessage();
-            return ResponseEntity.ok(errorMessage);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(errorMessage);
         }
 
         if (memberValidator.isDuplicateEmail(memberSignupRequest.getEmail())) {
@@ -81,7 +83,9 @@ public class MemberController {
             String errorMessage = Objects
                     .requireNonNull(bindingResult.getFieldError())
                     .getDefaultMessage();
-            return ResponseEntity.ok(errorMessage);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(errorMessage);
         }
 
         try {
@@ -115,7 +119,9 @@ public class MemberController {
             String errorMessage = Objects
                     .requireNonNull(bindingResult.getFieldError())
                     .getDefaultMessage();
-            return ResponseEntity.ok(errorMessage);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(errorMessage);
         }
 
         if (memberValidator.isDuplicateEmail(changeEmailRequest.getEmail())) {
@@ -141,7 +147,9 @@ public class MemberController {
             String errorMessage = Objects
                     .requireNonNull(bindingResult.getFieldError())
                     .getDefaultMessage();
-            return ResponseEntity.ok(errorMessage);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(errorMessage);
         }
 
         Member foundMember = memberService.getMemberEntity(principal.getName());
