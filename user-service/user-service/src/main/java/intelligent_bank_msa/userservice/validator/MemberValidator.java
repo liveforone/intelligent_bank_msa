@@ -1,9 +1,9 @@
 package intelligent_bank_msa.userservice.validator;
 
-import intelligent_bank.intelligent_bank.member.dto.MemberLoginRequest;
-import intelligent_bank.intelligent_bank.member.model.Member;
-import intelligent_bank.intelligent_bank.member.service.MemberService;
-import intelligent_bank.intelligent_bank.utility.CommonUtils;
+import intelligent_bank_msa.userservice.dto.MemberLoginRequest;
+import intelligent_bank_msa.userservice.model.Member;
+import intelligent_bank_msa.userservice.service.MemberService;
+import intelligent_bank_msa.userservice.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
