@@ -16,10 +16,10 @@ public class Resilience4JConfig {
     @Bean
     public Customizer<Resilience4JCircuitBreakerFactory> globalCustomCircuitConfig() {
         CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.custom()
-                .failureRateThreshold(4)  //100번 중 몇번 에러가 떳을때 서킷브레이커를 걸것인가?
-                .waitDurationInOpenState(Duration.ofMillis(1000))  //1sec
-                .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.COUNT_BASED)  //time베이스 혹은 카운트 베이스 중 하나
-                .slidingWindowSize(2)  //두번의 카운트가 저장
+                .failureRateThreshold(4)
+                .waitDurationInOpenState(Duration.ofMillis(1000))
+                .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.COUNT_BASED)
+                .slidingWindowSize(2)
                 .build();
 
         TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.custom()
