@@ -28,32 +28,6 @@ public class BankBookController {
 
     private final BankBookService bankBookService;
 
-    @PostMapping("/bank-info/{bankBookNum}")
-    public ResponseEntity<?> bankInfo(@PathVariable String bankBookNum) {
-        BankBook bankBook = bankBookService.getBankBookByBankBookNum(bankBookNum);
-
-        return ResponseEntity.ok(BankBookMapper.entityToDtoDetail(bankBook));
-    }
-
-    @PostMapping("/password/check")
-    public ResponseEntity<?> passwordCheck(@RequestBody PasswordCheckRequest request) {
-        BankBook bankbook = bankBookService.getBankBookByBankBookNum(request.getBankBookNum());
-
-        String inputPw = request.getInputPassword();
-        String originalPw = bankbook.getPassword();
-        if (BankBookPassword.isNotMatchPassword(inputPw, originalPw)) {
-            PasswordCheckResponse response = new PasswordCheckResponse();
-            response.setStatus(PasswordStatus.FALSE.name());
-
-            return ResponseEntity.ok(response);
-        }
-
-        PasswordCheckResponse response = new PasswordCheckResponse();
-        response.setStatus(PasswordStatus.TRUE.name());
-
-        return ResponseEntity.ok(response);
-    }
-
     @GetMapping("/my-bank/{email}")
     public ResponseEntity<?> myBank(@PathVariable String email) {
         BankBook bankBook = bankBookService.getBankBookByEmail(email);
@@ -150,5 +124,31 @@ public class BankBookController {
         log.info("통장 정지 해제 성공");
 
         return ResponseEntity.ok("통장의 정지가 성공적으로 해제 되었습니다.");
+    }
+
+    @PostMapping("/bank-info/{bankBookNum}")
+    public ResponseEntity<?> bankInfo(@PathVariable String bankBookNum) {
+        BankBook bankBook = bankBookService.getBankBookByBankBookNum(bankBookNum);
+
+        return ResponseEntity.ok(BankBookMapper.entityToDtoDetail(bankBook));
+    }
+
+    @PostMapping("/password/check")
+    public ResponseEntity<?> passwordCheck(@RequestBody PasswordCheckRequest request) {
+        BankBook bankbook = bankBookService.getBankBookByBankBookNum(request.getBankBookNum());
+
+        String inputPw = request.getInputPassword();
+        String originalPw = bankbook.getPassword();
+        if (BankBookPassword.isNotMatchPassword(inputPw, originalPw)) {
+            PasswordCheckResponse response = new PasswordCheckResponse();
+            response.setStatus(PasswordStatus.FALSE.name());
+
+            return ResponseEntity.ok(response);
+        }
+
+        PasswordCheckResponse response = new PasswordCheckResponse();
+        response.setStatus(PasswordStatus.TRUE.name());
+
+        return ResponseEntity.ok(response);
     }
 }
