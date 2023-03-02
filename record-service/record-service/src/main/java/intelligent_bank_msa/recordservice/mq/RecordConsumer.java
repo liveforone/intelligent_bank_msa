@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class RecordConsumer {
     private final RecordProducer recordProducer;
 
     @KafkaListener(topics = Topic.REQUEST_SAVE_RECORD)
+    @Transactional
     public void requestSaveRecord(String kafkaMessage) throws JsonProcessingException {
         log.info(KafkaLog.KAFKA_RECEIVE_LOG + kafkaMessage);
 
