@@ -127,7 +127,7 @@ public class BankBookController {
     }
 
     @PostMapping("/bank-info/{bankBookNum}")
-    public ResponseEntity<?> bankInfo(@PathVariable String bankBookNum) {
+    public ResponseEntity<?> bankInfoBankBookNum(@PathVariable String bankBookNum) {
         BankBook bankBook = bankBookService.getBankBookByBankBookNum(bankBookNum);
 
         return ResponseEntity.ok(BankBookMapper.entityToDtoDetail(bankBook));
