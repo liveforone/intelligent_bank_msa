@@ -2,10 +2,12 @@ package intelligent_bank_msa.calculateservice.mq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import intelligent_bank_msa.calculateservice.dto.kafka_error.KafkaErrorDto;
 import intelligent_bank_msa.calculateservice.dto.record.RecordRequest;
 import intelligent_bank_msa.calculateservice.mq.constant.KafkaLog;
 import intelligent_bank_msa.calculateservice.mq.constant.Topic;
 import intelligent_bank_msa.calculateservice.repository.RecordCopyRepository;
+import intelligent_bank_msa.calculateservice.utility.CommonUtils;
 import intelligent_bank_msa.calculateservice.utility.RecordCopyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class CalculateConsumer {
 
     private final RecordCopyRepository recordCopyRepository;
+    private final CalculateProducer calculateProducer;
+
+    private KafkaErrorDto makeErrorNoRecord() {
+        return KafkaErrorDto.builder()
+                .errorMessage(KafkaLog.ERROR_NO_RECORD)
+                .build();
+    }
 
     @KafkaListener(topics = Topic.REQUEST_SAVE_COPY_RECORD)
     @Transactional
@@ -28,6 +37,10 @@ public class CalculateConsumer {
         ObjectMapper objectMapper = new ObjectMapper();
         RecordRequest recordRequest = objectMapper.readValue(kafkaMessage, RecordRequest.class);
 
-        recordCopyRepository.save(RecordCopyMapper.dtoToEntity(recordRequest));
+        if (CommonUtils.isNull(recordRequest)) {
+            calculateProducer.sendNoRecordError(Topic.RESPONSE_SAVE_RECORD, makeErrorNoRecord());
+        } else {
+            recordCopyRepository.save(RecordCopyMapper.dtoToEntity(recordRequest));
+        }
     }
 }

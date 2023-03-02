@@ -2,7 +2,9 @@ package intelligent_bank_msa.calculateservice.mq;
 
 import com.google.gson.Gson;
 import intelligent_bank_msa.calculateservice.dto.bankbook.InterestRequest;
+import intelligent_bank_msa.calculateservice.dto.kafka_error.KafkaErrorDto;
 import intelligent_bank_msa.calculateservice.dto.record.RecordRequest;
+import intelligent_bank_msa.calculateservice.mq.constant.KafkaLog;
 import intelligent_bank_msa.calculateservice.mq.constant.Topic;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,13 @@ public class CalculateProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
     Gson gson = new Gson();
+
+    public void sendNoRecordError(String topic, KafkaErrorDto kafkaErrorDto) {
+        String jsonOrder = gson.toJson(kafkaErrorDto);
+
+        kafkaTemplate.send(topic, jsonOrder);
+        log.info(KafkaLog.ERROR_NO_RECORD);
+    }
 
     public void requestIncreaseBalance(InterestRequest interestRequest) {
         String jsonOrder = gson.toJson(interestRequest);
