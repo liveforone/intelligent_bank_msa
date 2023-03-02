@@ -2,7 +2,7 @@ package intelligent_bank_msa.bankbookservice.mq;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import intelligent_bank_msa.bankbookservice.dto.KafkaErrorDto;
+import intelligent_bank_msa.bankbookservice.dto.kafka_error.KafkaErrorDto;
 import intelligent_bank_msa.bankbookservice.model.BankBook;
 import intelligent_bank_msa.bankbookservice.mq.constant.KafkaLog;
 import intelligent_bank_msa.bankbookservice.mq.constant.KafkaMessage;
@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +37,7 @@ public class BankBookConsumer {
     }
 
     @KafkaListener(topics = Topic.REQUEST_INCREASE_BALANCE)
+    @Transactional
     public void increaseBalance(String kafkaMessage) {
         log.info(KafkaLog.KAFKA_RECEIVE_LOG + kafkaMessage);
 
@@ -53,6 +55,7 @@ public class BankBookConsumer {
     }
 
     @KafkaListener(topics = Topic.REQUEST_DECREASE_BALANCE)
+    @Transactional
     public void decreaseBalance(String kafkaMessage) {
         log.info(KafkaLog.KAFKA_RECEIVE_LOG + kafkaMessage);
 

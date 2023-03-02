@@ -1,10 +1,11 @@
 package intelligent_bank_msa.bankbookservice.controller;
 
 import intelligent_bank_msa.bankbookservice.aop.stopwatch.LogExecutionTime;
-import intelligent_bank_msa.bankbookservice.dto.BankBookRequest;
-import intelligent_bank_msa.bankbookservice.dto.PasswordCheckRequest;
-import intelligent_bank_msa.bankbookservice.dto.PasswordCheckResponse;
-import intelligent_bank_msa.bankbookservice.dto.SuspendRequest;
+import intelligent_bank_msa.bankbookservice.dto.bankbook.BankBookRequest;
+import intelligent_bank_msa.bankbookservice.dto.bankbook.SuspendRequest;
+import intelligent_bank_msa.bankbookservice.dto.password_check.PasswordCheckRequest;
+import intelligent_bank_msa.bankbookservice.dto.password_check.PasswordCheckResponse;
+import intelligent_bank_msa.bankbookservice.dto.password_check.PasswordStatus;
 import intelligent_bank_msa.bankbookservice.model.BankBook;
 import intelligent_bank_msa.bankbookservice.service.BankBookService;
 import intelligent_bank_msa.bankbookservice.utility.BankBookMapper;
@@ -27,26 +28,28 @@ public class BankBookController {
 
     private final BankBookService bankBookService;
 
-    @GetMapping("/bank-info/{bankBookNum}")
+    @PostMapping("/bank-info/{bankBookNum}")
     public ResponseEntity<?> bankInfo(@PathVariable String bankBookNum) {
         BankBook bankBook = bankBookService.getBankBookByBankBookNum(bankBookNum);
 
         return ResponseEntity.ok(BankBookMapper.entityToDtoDetail(bankBook));
     }
 
-    @GetMapping("/password/check")
+    @PostMapping("/password/check")
     public ResponseEntity<?> passwordCheck(@RequestBody PasswordCheckRequest request) {
+        BankBook bankbook = bankBookService.getBankBookByBankBookNum(request.getBankBookNum());
+
         String inputPw = request.getInputPassword();
-        String originalPw = request.getOriginalPassword();
-        if (!BankBookPassword.isMatchPassword(inputPw, originalPw)) {
+        String originalPw = bankbook.getPassword();
+        if (BankBookPassword.isNotMatchPassword(inputPw, originalPw)) {
             PasswordCheckResponse response = new PasswordCheckResponse();
-            response.setStatus(false);
+            response.setStatus(PasswordStatus.FALSE.name());
 
             return ResponseEntity.ok(response);
         }
 
         PasswordCheckResponse response = new PasswordCheckResponse();
-        response.setStatus(true);
+        response.setStatus(PasswordStatus.TRUE.name());
 
         return ResponseEntity.ok(response);
     }
@@ -111,7 +114,7 @@ public class BankBookController {
 
         String inputPassword = suspendRequest.getPassword();
         String originalPassword = bankBook.getPassword();
-        if (!BankBookPassword.isMatchPassword(inputPassword, originalPassword)) {
+        if (BankBookPassword.isNotMatchPassword(inputPassword, originalPassword)) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("비밀번호가 틀렸습니다.");
@@ -137,7 +140,7 @@ public class BankBookController {
 
         String inputPassword = suspendRequest.getPassword();
         String originalPassword = bankBook.getPassword();
-        if (!BankBookPassword.isMatchPassword(inputPassword, originalPassword)) {
+        if (BankBookPassword.isNotMatchPassword(inputPassword, originalPassword)) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("비밀번호가 틀렸습니다.");

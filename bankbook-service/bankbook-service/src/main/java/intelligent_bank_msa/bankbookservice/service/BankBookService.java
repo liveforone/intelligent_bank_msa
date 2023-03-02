@@ -1,7 +1,7 @@
 package intelligent_bank_msa.bankbookservice.service;
 
-import intelligent_bank_msa.bankbookservice.dto.BankBookRequest;
-import intelligent_bank_msa.bankbookservice.dto.SuspendRequest;
+import intelligent_bank_msa.bankbookservice.dto.bankbook.BankBookRequest;
+import intelligent_bank_msa.bankbookservice.dto.bankbook.SuspendRequest;
 import intelligent_bank_msa.bankbookservice.model.BankBook;
 import intelligent_bank_msa.bankbookservice.model.BankBookState;
 import intelligent_bank_msa.bankbookservice.repository.BankBookRepository;

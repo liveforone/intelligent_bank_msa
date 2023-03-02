@@ -1,7 +1,7 @@
 package intelligent_bank_msa.bankbookservice.mq;
 
 import com.google.gson.Gson;
-import intelligent_bank_msa.bankbookservice.dto.KafkaErrorDto;
+import intelligent_bank_msa.bankbookservice.dto.kafka_error.KafkaErrorDto;
 import intelligent_bank_msa.bankbookservice.mq.constant.KafkaLog;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
