@@ -8,7 +8,6 @@ import intelligent_bank_msa.bankbookservice.mq.constant.KafkaLog;
 import intelligent_bank_msa.bankbookservice.mq.constant.KafkaMessage;
 import intelligent_bank_msa.bankbookservice.mq.constant.Topic;
 import intelligent_bank_msa.bankbookservice.repository.BankBookRepository;
-import intelligent_bank_msa.bankbookservice.utility.BankBookMapper;
 import intelligent_bank_msa.bankbookservice.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,28 +33,6 @@ public class BankBookConsumer {
         return KafkaErrorDto.builder()
                 .errorMessage(NO_BANKBOOK_ERROR_MESSAGE)
                 .build();
-    }
-
-    @KafkaListener(topics = Topic.REQUEST_BANKBOOK_DETAIL)
-    public void requestBankBookDetail(String kafkaMessage) {
-        log.info(KafkaLog.KAFKA_RECEIVE_LOG + kafkaMessage);
-
-        JsonObject jsonMessage = parseKafkaMessage(kafkaMessage);
-        String bankBookNum = jsonMessage.get(KafkaMessage.BANKBOOK_NUM).getAsString();
-
-        BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
-
-        if (CommonUtils.isNull(bankBook)) {
-            bankBookProducer.sendErrorMessage(
-                    Topic.RESPONSE_BANKBOOK_DETAIL,
-                    makeErrorDto()
-            );
-        } else {
-            bankBookProducer.sendBankBookDetail(
-                    Topic.RESPONSE_BANKBOOK_DETAIL,
-                    BankBookMapper.entityToDtoDetail(bankBook)
-            );
-        }
     }
 
     @KafkaListener(topics = Topic.REQUEST_INCREASE_BALANCE)
