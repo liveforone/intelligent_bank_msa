@@ -85,7 +85,7 @@ spring:
             - RewritePath=/atm-service/(?<segment>.*), /$\{segment}
             - name: CircuitBreaker
               args:
-                name: record-service
+                name: atm-service
                 fallbackuri: forward:/fallback/atm
 
 management:
