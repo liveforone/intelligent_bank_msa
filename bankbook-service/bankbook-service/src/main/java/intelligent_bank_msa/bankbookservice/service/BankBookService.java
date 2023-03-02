@@ -19,6 +19,10 @@ public class BankBookService {
 
     private final BankBookRepository bankBookRepository;
 
+    public BankBook getBankBookByBankBookNum(String bankBookNum) {
+        return bankBookRepository.findOneByBankBookNum(bankBookNum);
+    }
+
     public BankBook getBankBookByEmail(String email) {
         return bankBookRepository.findOneByEmail(email);
     }

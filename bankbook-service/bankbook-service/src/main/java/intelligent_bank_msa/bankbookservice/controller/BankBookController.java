@@ -25,6 +25,13 @@ public class BankBookController {
 
     private final BankBookService bankBookService;
 
+    @GetMapping("/bank-info/{bankBookNum}")
+    public ResponseEntity<?> bankInfo(@PathVariable String bankBookNum) {
+        BankBook bankBook = bankBookService.getBankBookByBankBookNum(bankBookNum);
+
+        return ResponseEntity.ok(BankBookMapper.entityToDtoDetail(bankBook));
+    }
+
     @GetMapping("/my-bank/{email}")
     public ResponseEntity<?> myBank(@PathVariable String email) {
         BankBook bankBook = bankBookService.getBankBookByEmail(email);
