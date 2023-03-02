@@ -1,3 +1,9 @@
+[리팩토링 시나리오]
+1. pathvariable 이용해서 request dto를 좀 깔끔하게 만들기
+(myBankBookNum 같은것..)
+2. feign으로 요청중인 것들 kafka로 변경, 즉 카프카로 조회 가능하게 하기
+3. 전체적인 코드 다듬기(디렉터리 분류, 코드 정리, 문자열 enum화, 안쓰이는 파일 삭제)
+
 문서화 시에 디렉토리 구조를 dto, controller로 둿다가
 각 도메인 별로 뺏다가 결국 마이크로 서비스로 변경한 그 히스토리를 잘 기재하기
 
@@ -14,15 +20,6 @@ password encoder는 서비스끼리 혼용해서 쓸수없다.
 bankbook에서 만든 password는 bankbook으로 보내서 pw 판별해야한다.
 이것이 싫다면 암호화 하지 않고 써야한다.
 
-record 이외의 송금과 atm에 commonutils에 넣는다.
-public static int createNowYear() {
-        return LocalDate.now().getYear();
-    }
-
-    public static Month createNowMonth() {
-        return LocalDate.now().getMonth();
-    }
-
 record를 만든 후에 송금과 atm은 각각 record를 똑같이 저장하는 read-only db를 만든다.
 복제 방법은 record가 추가 될때마다 record로 카프카를 통해 보내고,
 record를 저장한 후에 record kafka는 각각 송금과 atm으로 해당 값을 전달하여 저장시킨다.
@@ -34,15 +31,6 @@ record를 저장한 후에 record kafka는 각각 송금과 atm으로 해당 값
 토픽은 문서화 해서 저장하기
 위키와 전체 문서화
 db 인덱스 걸기
-
-
-yml에서 path랑 method잘 집어넣기
-이중에서 authorizaionfilter 안걸꺼면 잘 빼기
-후에 fallback controller 에 컨트롤러 넣기
-카프카는 컨슈머 그룹아이디 intelligentBankGroup 로 지정하기
-에러는 아래와 같이 처리한다.
-requet dto 키를 이용해서 해당 값이 없다면
-errordto를 꺼내서 메세지를 바인딩 받으면된다.
 
 api조회나 다른 db테이블의 id를 저장하여 이중으로 조회쿼리를 날리는 방식은 성능에 좋지 않다.
 당연히 조인이 빠르다.
