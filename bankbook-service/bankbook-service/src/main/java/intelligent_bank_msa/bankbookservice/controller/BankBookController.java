@@ -2,6 +2,8 @@ package intelligent_bank_msa.bankbookservice.controller;
 
 import intelligent_bank_msa.bankbookservice.aop.stopwatch.LogExecutionTime;
 import intelligent_bank_msa.bankbookservice.dto.BankBookRequest;
+import intelligent_bank_msa.bankbookservice.dto.PasswordCheckRequest;
+import intelligent_bank_msa.bankbookservice.dto.PasswordCheckResponse;
 import intelligent_bank_msa.bankbookservice.dto.SuspendRequest;
 import intelligent_bank_msa.bankbookservice.model.BankBook;
 import intelligent_bank_msa.bankbookservice.service.BankBookService;
@@ -30,6 +32,23 @@ public class BankBookController {
         BankBook bankBook = bankBookService.getBankBookByBankBookNum(bankBookNum);
 
         return ResponseEntity.ok(BankBookMapper.entityToDtoDetail(bankBook));
+    }
+
+    @GetMapping("/password/check")
+    public ResponseEntity<?> passwordCheck(@RequestBody PasswordCheckRequest request) {
+        String inputPw = request.getInputPassword();
+        String originalPw = request.getOriginalPassword();
+        if (!BankBookPassword.isMatchPassword(inputPw, originalPw)) {
+            PasswordCheckResponse response = new PasswordCheckResponse();
+            response.setStatus(false);
+
+            return ResponseEntity.ok(response);
+        }
+
+        PasswordCheckResponse response = new PasswordCheckResponse();
+        response.setStatus(true);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/my-bank/{email}")
