@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 public class BankBookProducer {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
+    Gson gson = new Gson();
 
     public void sendErrorMessage(String topic, KafkaErrorDto kafkaErrorDto) {
-        Gson gson = new Gson();
         String jsonOrder = gson.toJson(kafkaErrorDto);
 
         kafkaTemplate.send(topic, jsonOrder);
