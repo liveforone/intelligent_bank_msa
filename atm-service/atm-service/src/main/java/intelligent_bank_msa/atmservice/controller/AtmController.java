@@ -49,7 +49,7 @@ public class AtmController {
         }
 
         String bankBookNum = atmRequest.getBankBookNum();
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("bankbook-service-breaker");
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("atm-service-breaker");
         BankBookResponse bankBook = circuitBreaker.run(
                 () -> bankBookServiceClient.getBankBook(bankBookNum),
                 throwable -> null
@@ -105,7 +105,7 @@ public class AtmController {
         }
 
         String bankBookNum = atmRequest.getBankBookNum();
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("bankbook-service-breaker");
+        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("atm-service-breaker");
         BankBookResponse bankBook = circuitBreaker.run(
                 () -> bankBookServiceClient.getBankBook(bankBookNum),
                 throwable -> null

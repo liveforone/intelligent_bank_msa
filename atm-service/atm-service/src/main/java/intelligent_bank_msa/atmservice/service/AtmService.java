@@ -9,7 +9,6 @@ import intelligent_bank_msa.atmservice.dto.record.RecordStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +17,6 @@ public class AtmService {
 
     private final AtmProducer atmProducer;
 
-    @Transactional
     public void depositAtm(AtmRequest atmRequest) {
         atmProducer.requestIncreaseBalance(atmRequest);
 
@@ -38,7 +36,6 @@ public class AtmService {
         atmProducer.requestSaveRecord(depositRequest);
     }
 
-    @Transactional
     public void withdrawAtm(AtmRequest atmRequest) {
         atmProducer.requestDecreaseBalance(atmRequest);
 
