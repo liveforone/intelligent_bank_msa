@@ -83,6 +83,10 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/atm-service/(?<segment>.*), /$\{segment}
+            - name: CircuitBreaker
+              args:
+                name: record-service
+                fallbackuri: forward:/fallback/atm
 
 management:
   endpoints:
