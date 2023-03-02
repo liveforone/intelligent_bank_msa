@@ -3,6 +3,14 @@ post 요청 -> feign get사용 이 불가하는 것이다.
 post 요청 -> feign post 사용 해야하만 가능하다.
 따라서 이를 kafka로 변경해보자
 
+카프카의 단점은 메세지를 받고 받은 주체가 다시 보내는것은 가능해도
+보내는 주체가 받지는 못한다.
+메세지를 보내고 받기를 원하면 mq를 쓰는 방법보다 read-only db를 넣는방법을 사용하는것이 좋다.
+
+password encoder는 서비스끼리 혼용해서 쓸수없다.
+bankbook에서 만든 password는 bankbook으로 보내서 pw 판별해야한다.
+이것이 싫다면 암호화 하지 않고 써야한다.
+
 record 이외의 송금과 atm에 commonutils에 넣는다.
 public static int createNowYear() {
         return LocalDate.now().getYear();
