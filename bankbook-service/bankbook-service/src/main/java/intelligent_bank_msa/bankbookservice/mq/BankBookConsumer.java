@@ -29,7 +29,7 @@ public class BankBookConsumer {
                 .getAsJsonObject();
     }
 
-    private KafkaErrorDto makeErrorDto() {
+    private KafkaErrorDto makeErrorNoBankBook() {
         String NO_BANKBOOK_ERROR_MESSAGE = "통장이 존재하지 않습니다.";
         return KafkaErrorDto.builder()
                 .errorMessage(NO_BANKBOOK_ERROR_MESSAGE)
@@ -48,7 +48,7 @@ public class BankBookConsumer {
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            bankBookProducer.sendNoBankBookError(Topic.RESPONSE_INCREASE_BALANCE, makeErrorDto());
+            bankBookProducer.sendNoBankBookError(Topic.RESPONSE_INCREASE_BALANCE, makeErrorNoBankBook());
         } else {
             bankBookRepository.increaseBalance(bankBookNum, inputMoney);
         }
@@ -66,7 +66,7 @@ public class BankBookConsumer {
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            bankBookProducer.sendNoBankBookError(Topic.RESPONSE_DECREASE_BALANCE, makeErrorDto());
+            bankBookProducer.sendNoBankBookError(Topic.RESPONSE_DECREASE_BALANCE, makeErrorNoBankBook());
         } else {
             bankBookRepository.decreaseBalance(bankBookNum, inputMoney);
         }
