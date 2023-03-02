@@ -1,3 +1,8 @@
+현재 feign의 문제점은 요청하는 http method와 같은 메소드를 가지고 있어야한다는 것이다.
+post 요청 -> feign get사용 이 불가하는 것이다.
+post 요청 -> feign post 사용 해야하만 가능하다.
+따라서 이를 kafka로 변경해보자
+
 record 이외의 송금과 atm에 commonutils에 넣는다.
 public static int createNowYear() {
         return LocalDate.now().getYear();
