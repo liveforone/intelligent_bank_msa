@@ -1,4 +1,4 @@
-package intelligent_bank_msa.bankbookservice.dto;
+package intelligent_bank_msa.bankbookservice.dto.password_check;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PasswordCheckResponse {
 
-    private boolean status;
+    private String status;
 }

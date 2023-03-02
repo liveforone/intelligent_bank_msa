@@ -11,7 +11,7 @@ public class BankBookPassword {
         return encoder.encode(password);
     }
 
-    public static boolean isMatchPassword(String inputPassword, String originalPassword) {
-        return encoder.matches(inputPassword, originalPassword);
+    public static boolean isNotMatchPassword(String inputPassword, String originalPassword) {
+        return !encoder.matches(inputPassword, originalPassword);
     }
 }

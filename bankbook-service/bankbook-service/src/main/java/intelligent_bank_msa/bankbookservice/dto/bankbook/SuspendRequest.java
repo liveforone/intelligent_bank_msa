@@ -1,4 +1,4 @@
-package intelligent_bank_msa.bankbookservice.dto;
+package intelligent_bank_msa.bankbookservice.dto.bankbook;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
