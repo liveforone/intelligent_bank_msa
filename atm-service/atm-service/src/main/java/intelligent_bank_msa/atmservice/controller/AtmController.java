@@ -32,6 +32,7 @@ public class AtmController {
     private final BankBookServiceClient bankBookServiceClient;
     private final AtmService atmService;
     private final CircuitBreakerFactory circuitBreakerFactory;
+    CircuitBreaker circuitBreaker = circuitBreakerFactory.create("atm-service-breaker");
 
     @PostMapping("/deposit")
     @LogExecutionTime
@@ -49,7 +50,6 @@ public class AtmController {
         }
 
         String bankBookNum = atmRequest.getBankBookNum();
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("atm-service-breaker");
         BankBookResponse bankBook = circuitBreaker.run(
                 () -> bankBookServiceClient.getBankBook(bankBookNum),
                 throwable -> null
@@ -74,7 +74,6 @@ public class AtmController {
         );
 
         PasswordCheckResponse checkResponse = bankBookServiceClient.checkBankPassword(request);
-
         if (Objects.equals(checkResponse.getStatus(), PasswordStatus.FALSE.name())) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -105,7 +104,6 @@ public class AtmController {
         }
 
         String bankBookNum = atmRequest.getBankBookNum();
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("atm-service-breaker");
         BankBookResponse bankBook = circuitBreaker.run(
                 () -> bankBookServiceClient.getBankBook(bankBookNum),
                 throwable -> null
@@ -130,7 +128,6 @@ public class AtmController {
         );
 
         PasswordCheckResponse checkResponse = bankBookServiceClient.checkBankPassword(request);
-
         if (Objects.equals(checkResponse.getStatus(), PasswordStatus.FALSE.name())) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
