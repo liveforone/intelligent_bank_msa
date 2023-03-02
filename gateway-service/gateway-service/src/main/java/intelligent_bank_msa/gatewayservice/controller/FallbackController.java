@@ -36,4 +36,11 @@ public class FallbackController {
                 + "\n이용에 불편을 드려 죄송합니다.";
         return Mono.just(errorMessage);
     }
+
+    @GetMapping("/remit")
+    public Mono<String> fallbackRemit() {
+        String errorMessage = "송금 서비스의 장애로 접근이 불가능합니다."
+                + "\n이용에 불편을 드려 죄송합니다.";
+        return Mono.just(errorMessage);
+    }
 }

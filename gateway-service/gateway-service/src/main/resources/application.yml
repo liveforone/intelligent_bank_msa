@@ -87,6 +87,18 @@ spring:
               args:
                 name: atm-service
                 fallbackuri: forward:/fallback/atm
+        - id: remit-service
+          uri: lb://REMIT-SERVICE
+          predicates:
+            - Path=/remit-service/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/remit-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+            - name: CircuitBreaker
+              args:
+                name: remit-service
+                fallbackuri: forward:/fallback/remit
 
 management:
   endpoints:
