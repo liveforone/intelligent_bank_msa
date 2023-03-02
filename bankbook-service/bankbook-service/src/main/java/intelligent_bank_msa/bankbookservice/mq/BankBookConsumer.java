@@ -30,9 +30,8 @@ public class BankBookConsumer {
     }
 
     private KafkaErrorDto makeErrorNoBankBook() {
-        String NO_BANKBOOK_ERROR_MESSAGE = "통장이 존재하지 않습니다.";
         return KafkaErrorDto.builder()
-                .errorMessage(NO_BANKBOOK_ERROR_MESSAGE)
+                .errorMessage(KafkaLog.ERROR_NO_BANKBOOK)
                 .build();
     }
 
