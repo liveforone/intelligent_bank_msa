@@ -31,6 +31,7 @@ public class RemitController {
 
     private final BankBookServiceClient bankBookServiceClient;
     private final CircuitBreakerFactory circuitBreakerFactory;
+    CircuitBreaker circuitBreaker = circuitBreakerFactory.create("remit-service-breaker");
     private final RemitService remitService;
 
     @PostMapping("/remit")
@@ -49,7 +50,6 @@ public class RemitController {
         }
 
         String bankBookNum = remitRequest.getBankBookNum();
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("remit-service-breaker");
         BankBookResponse bankBook = circuitBreaker.run(
                 () -> bankBookServiceClient.getBankBookByBankBookNum(bankBookNum),
                 throwable -> null
@@ -83,8 +83,8 @@ public class RemitController {
                 myBankBook.getBankBookNum(),
                 inputPassword
         );
-        PasswordCheckResponse checkResponse = bankBookServiceClient.checkBankPassword(request);
 
+        PasswordCheckResponse checkResponse = bankBookServiceClient.checkBankPassword(request);
         if (Objects.equals(checkResponse.getStatus(), PasswordStatus.FALSE.name())) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
