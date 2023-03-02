@@ -73,7 +73,7 @@ public class BankBookController {
         bankBookService.saveBankBook(bankBookRequest);
         log.info("통장 개설 완료");
 
-        return ResponseEntity.ok("통장이 정상적으로 개설되었습니다.\n 감사합니다");
+        return ResponseEntity.ok("통장이 정상적으로 개설되었습니다.\n감사합니다");
     }
 
     @PatchMapping("/suspend")
