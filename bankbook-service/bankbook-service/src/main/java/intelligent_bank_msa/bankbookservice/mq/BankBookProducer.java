@@ -16,10 +16,10 @@ public class BankBookProducer {
     private final KafkaTemplate<String, String> kafkaTemplate;
     Gson gson = new Gson();
 
-    public void sendErrorMessage(String topic, KafkaErrorDto kafkaErrorDto) {
+    public void sendNoBankBookError(String topic, KafkaErrorDto kafkaErrorDto) {
         String jsonOrder = gson.toJson(kafkaErrorDto);
 
         kafkaTemplate.send(topic, jsonOrder);
-        log.info(KafkaLog.SEND_ERROR_MESSAGE_LOG);
+        log.info(KafkaLog.ERROR_NO_BANKBOOK);
     }
 }

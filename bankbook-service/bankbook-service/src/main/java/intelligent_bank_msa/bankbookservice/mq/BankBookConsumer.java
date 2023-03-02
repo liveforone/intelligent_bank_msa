@@ -48,7 +48,7 @@ public class BankBookConsumer {
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            bankBookProducer.sendErrorMessage(Topic.RESPONSE_INCREASE_BALANCE, makeErrorDto());
+            bankBookProducer.sendNoBankBookError(Topic.RESPONSE_INCREASE_BALANCE, makeErrorDto());
         } else {
             bankBookRepository.increaseBalance(bankBookNum, inputMoney);
         }
@@ -66,7 +66,7 @@ public class BankBookConsumer {
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            bankBookProducer.sendErrorMessage(Topic.RESPONSE_DECREASE_BALANCE, makeErrorDto());
+            bankBookProducer.sendNoBankBookError(Topic.RESPONSE_DECREASE_BALANCE, makeErrorDto());
         } else {
             bankBookRepository.decreaseBalance(bankBookNum, inputMoney);
         }
