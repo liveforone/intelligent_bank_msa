@@ -9,6 +9,7 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.springframework.web: DEBUG
+    intelligent_bank_msa: DEBUG
 
 eureka:
   instance:
