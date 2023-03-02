@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PasswordCheckRequest {
 
+    private String bankBookNum;
     private String inputPassword;
-    private String originalPassword;
 
-    public static PasswordCheckRequest createRequest(String inputPassword, String originalPassword) {
-        return new PasswordCheckRequest(inputPassword, originalPassword);
+    public static PasswordCheckRequest createRequest(String bankBookNum, String inputPassword) {
+        return new PasswordCheckRequest(bankBookNum, inputPassword);
     }
 }

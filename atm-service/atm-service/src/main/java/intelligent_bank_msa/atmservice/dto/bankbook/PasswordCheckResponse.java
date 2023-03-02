@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PasswordCheckResponse {
 
-    private boolean status;
+    private String status;
 }
