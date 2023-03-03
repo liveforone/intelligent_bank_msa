@@ -101,11 +101,12 @@ kafka 커텍트를 사용하여 sync를 맞춰도 되지만, 아직은 사용하
 다른 서비스에서 지속적으로 데이터를 가져오는 것이 아니라 바로바로 꺼내서 사용할 수 있어서 성능상과 전체적인 코드 구조에 큰 이점을 가져다 준다.
 
 [할것]
-1. [위키] 위키 이전
-2. [문서] 위키 수정 및 문서 추가 + 정리
-3. [문서] DB쿼리에 카피 db도 넣어서 추가 정리
-4. [문서] kafka 호출 command(명령어) 정리
-5. [코드] 테스트 코드 작성
+1. [코드] 아래의 리팩토링 작업 수행
+2. [위키] 위키 이전
+3. [문서] 위키 수정 및 문서 추가 + 정리
+4. [문서] DB쿼리에 카피 db도 넣어서 추가 정리
+5. [문서] kafka 호출 command(명령어) 정리
+6. [코드] 테스트 코드 작성
 
 [향후 리팩토링 할것]
 1. 비밀번호체크를 따로 빼지말고(지금 feign client메소드 따로 빼서 진행중)
@@ -113,7 +114,38 @@ kafka 커텍트를 사용하여 sync를 맞춰도 되지만, 아직은 사용하
 MATCH, NOT_MATCH 로 가져오면 된다. 페인클라이언트는 느리고, 자원소모가 심한 api호출 방식이기때문에
 필요한 만큼 데이터를 가져오고, 한번에 필요한 것들을 다 가져오고, 단건으로 처리하는 것이 너무나도 중요하다.
 2. no offset 페이징 작업
-3. feign client 성능 최적화
+3. feign client를 아래에 있는 kafka로 값을 받는 로직으로 변경하기
+```
+@Controller
+@RequestMapping("/kafka")
+public class KafkaController {
+
+    @Autowired
+    private KafkaListenerService kafkaListenerService;
+
+    @GetMapping("/consume")
+    @ResponseBody
+    public List<String> consumeMessages() {
+        return kafkaListenerService.getMessages();
+    }
+
+    @KafkaListener(topics = "${kafka.topic.name}")
+    public void listen(@Payload String message) {
+        kafkaListenerService.addMessage(message);
+    }
+}
+```
+4. kafka의 에러처리를 response 토픽으로 메세지를 보내지않고 아래와 같이 처리한다.
+```
+@KafkaListener(topics = "my-topic", errorHandler = "handleError")
+public void listen(String message) {
+    // ...
+}
+
+public void handleError(Throwable throwable) {
+    // 에러 처리 코드
+}
+```
 
 페이징의 경우 nooffset을 사용한다.
 이때에는 쿼리 스트링을 사용해야하므로 reqeustparam 어노테이션을 활용한다.
