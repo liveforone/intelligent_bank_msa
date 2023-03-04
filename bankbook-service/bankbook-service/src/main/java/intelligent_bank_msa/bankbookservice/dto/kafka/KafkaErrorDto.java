@@ -1,4 +1,4 @@
-package intelligent_bank_msa.bankbookservice.dto.kafka_error;
+package intelligent_bank_msa.bankbookservice.dto.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,7 +2,7 @@ package intelligent_bank_msa.bankbookservice.mq;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import intelligent_bank_msa.bankbookservice.dto.kafka_error.KafkaErrorDto;
+import intelligent_bank_msa.bankbookservice.dto.kafka.KafkaErrorDto;
 import intelligent_bank_msa.bankbookservice.model.BankBook;
 import intelligent_bank_msa.bankbookservice.mq.constant.KafkaLog;
 import intelligent_bank_msa.bankbookservice.mq.constant.KafkaMessage;
@@ -29,9 +29,9 @@ public class BankBookConsumer {
                 .getAsJsonObject();
     }
 
-    private KafkaErrorDto makeErrorNoBankBook() {
+    private KafkaErrorDto returnError(String errorLog) {
         return KafkaErrorDto.builder()
-                .errorMessage(KafkaLog.ERROR_NO_BANKBOOK)
+                .errorMessage(errorLog)
                 .build();
     }
 
@@ -47,7 +47,10 @@ public class BankBookConsumer {
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            bankBookProducer.sendNoBankBookError(Topic.RESPONSE_INCREASE_BALANCE, makeErrorNoBankBook());
+            bankBookProducer.sendError(
+                    Topic.RESPONSE_INCREASE_BALANCE,
+                    returnError(KafkaLog.ERROR_NO_BANKBOOK)
+            );
         } else {
             bankBookRepository.increaseBalance(bankBookNum, inputMoney);
         }
@@ -65,7 +68,10 @@ public class BankBookConsumer {
         BankBook bankBook = bankBookRepository.findOneByBankBookNum(bankBookNum);
 
         if (CommonUtils.isNull(bankBook)) {
-            bankBookProducer.sendNoBankBookError(Topic.RESPONSE_DECREASE_BALANCE, makeErrorNoBankBook());
+            bankBookProducer.sendError(
+                    Topic.RESPONSE_DECREASE_BALANCE,
+                    returnError(KafkaLog.ERROR_NO_BANKBOOK)
+            );
         } else {
             bankBookRepository.decreaseBalance(bankBookNum, inputMoney);
         }

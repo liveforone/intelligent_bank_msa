@@ -3,9 +3,6 @@ package intelligent_bank_msa.bankbookservice.controller;
 import intelligent_bank_msa.bankbookservice.aop.stopwatch.LogExecutionTime;
 import intelligent_bank_msa.bankbookservice.dto.bankbook.BankBookRequest;
 import intelligent_bank_msa.bankbookservice.dto.bankbook.SuspendRequest;
-import intelligent_bank_msa.bankbookservice.dto.password_check.PasswordCheckRequest;
-import intelligent_bank_msa.bankbookservice.dto.password_check.PasswordCheckResponse;
-import intelligent_bank_msa.bankbookservice.dto.password_check.PasswordStatus;
 import intelligent_bank_msa.bankbookservice.model.BankBook;
 import intelligent_bank_msa.bankbookservice.service.BankBookService;
 import intelligent_bank_msa.bankbookservice.utility.BankBookMapper;
@@ -124,31 +121,5 @@ public class BankBookController {
         log.info("통장 정지 해제 성공");
 
         return ResponseEntity.ok("통장의 정지가 성공적으로 해제 되었습니다.");
-    }
-
-    @PostMapping("/bank-info/{bankBookNum}")
-    public ResponseEntity<?> bankInfoBankBookNum(@PathVariable String bankBookNum) {
-        BankBook bankBook = bankBookService.getBankBookByBankBookNum(bankBookNum);
-
-        return ResponseEntity.ok(BankBookMapper.entityToDtoDetail(bankBook));
-    }
-
-    @PostMapping("/password/check")
-    public ResponseEntity<?> passwordCheck(@RequestBody PasswordCheckRequest request) {
-        BankBook bankbook = bankBookService.getBankBookByBankBookNum(request.getBankBookNum());
-
-        String inputPw = request.getInputPassword();
-        String originalPw = bankbook.getPassword();
-        if (BankBookPassword.isNotMatchPassword(inputPw, originalPw)) {
-            PasswordCheckResponse response = new PasswordCheckResponse();
-            response.setStatus(PasswordStatus.FALSE.name());
-
-            return ResponseEntity.ok(response);
-        }
-
-        PasswordCheckResponse response = new PasswordCheckResponse();
-        response.setStatus(PasswordStatus.TRUE.name());
-
-        return ResponseEntity.ok(response);
     }
 }
