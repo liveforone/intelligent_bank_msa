@@ -1,20 +1,17 @@
 package intelligent_bank_msa.atmservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import intelligent_bank_msa.atmservice.aop.stopwatch.LogExecutionTime;
-import intelligent_bank_msa.atmservice.client.BankBookServiceClient;
 import intelligent_bank_msa.atmservice.dto.atm.AtmRequest;
-import intelligent_bank_msa.atmservice.dto.bankbook.BankBookResponse;
-import intelligent_bank_msa.atmservice.dto.bankbook.PasswordCheckRequest;
-import intelligent_bank_msa.atmservice.dto.bankbook.PasswordCheckResponse;
-import intelligent_bank_msa.atmservice.dto.bankbook.PasswordStatus;
+import intelligent_bank_msa.atmservice.dto.feign.PasswordStatus;
+import intelligent_bank_msa.atmservice.dto.feign.BankInfoAtmDto;
+import intelligent_bank_msa.atmservice.feign.BankBookFeignService;
 import intelligent_bank_msa.atmservice.service.AtmService;
 import intelligent_bank_msa.atmservice.utility.BankBookStateCheck;
 import intelligent_bank_msa.atmservice.utility.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -29,17 +26,15 @@ import java.util.Objects;
 @Slf4j
 public class AtmController {
 
-    private final BankBookServiceClient bankBookServiceClient;
     private final AtmService atmService;
-    private final CircuitBreakerFactory circuitBreakerFactory;
-    CircuitBreaker circuitBreaker = circuitBreakerFactory.create("atm-service-breaker");
+    private final BankBookFeignService bankBookFeignService;
 
     @PostMapping("/deposit")
     @LogExecutionTime
     public ResponseEntity<?> depositAtm(
             @RequestBody @Valid AtmRequest atmRequest,
             BindingResult bindingResult
-    ) {
+    ) throws JsonProcessingException {
         if (bindingResult.hasErrors()) {
             String errorMessage = Objects
                     .requireNonNull(bindingResult.getFieldError())
@@ -49,13 +44,9 @@ public class AtmController {
                     .body(errorMessage);
         }
 
-        String bankBookNum = atmRequest.getBankBookNum();
-        BankBookResponse bankBook = circuitBreaker.run(
-                () -> bankBookServiceClient.getBankBook(bankBookNum),
-                throwable -> null
-        );
+        BankInfoAtmDto bankBook = bankBookFeignService.getBankBook(atmRequest);
 
-        if (CommonUtils.isNull(bankBook)) {
+        if (CommonUtils.isNull(bankBook.getBankBookNum())) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("존재하지 않는 통장 번호입니다.");
@@ -67,14 +58,10 @@ public class AtmController {
                     .body("정지된 통장입니다.\n정지된 통장으로는 입금이 불가능합니다.");
         }
 
-        String inputPassword = atmRequest.getPassword();
-        PasswordCheckRequest request = PasswordCheckRequest.createRequest(
-                bankBookNum,
-                inputPassword
-        );
-
-        PasswordCheckResponse checkResponse = bankBookServiceClient.checkBankPassword(request);
-        if (Objects.equals(checkResponse.getStatus(), PasswordStatus.FALSE.name())) {
+        if (Objects.equals(
+                bankBook.getPasswordStatus().name(),
+                PasswordStatus.FALSE.name()
+        )) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("비밀번호가 일치하지 않습니다.");
@@ -93,7 +80,7 @@ public class AtmController {
     public ResponseEntity<?> withdrawAtm(
             @RequestBody @Valid AtmRequest atmRequest,
             BindingResult bindingResult
-    ) {
+    ) throws JsonProcessingException {
         if (bindingResult.hasErrors()) {
             String errorMessage = Objects
                     .requireNonNull(bindingResult.getFieldError())
@@ -103,13 +90,9 @@ public class AtmController {
                     .body(errorMessage);
         }
 
-        String bankBookNum = atmRequest.getBankBookNum();
-        BankBookResponse bankBook = circuitBreaker.run(
-                () -> bankBookServiceClient.getBankBook(bankBookNum),
-                throwable -> null
-        );
+        BankInfoAtmDto bankBook = bankBookFeignService.getBankBook(atmRequest);
 
-        if (CommonUtils.isNull(bankBook)) {
+        if (CommonUtils.isNull(bankBook.getBankBookNum())) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("존재하지 않는 통장 번호입니다.");
@@ -121,14 +104,10 @@ public class AtmController {
                     .body("정지된 통장입니다.\n정지된 통장으로는 출금이 불가능합니다.");
         }
 
-        String inputPassword = atmRequest.getPassword();
-        PasswordCheckRequest request = PasswordCheckRequest.createRequest(
-                bankBookNum,
-                inputPassword
-        );
-
-        PasswordCheckResponse checkResponse = bankBookServiceClient.checkBankPassword(request);
-        if (Objects.equals(checkResponse.getStatus(), PasswordStatus.FALSE.name())) {
+        if (Objects.equals(
+                bankBook.getPasswordStatus().name(),
+                PasswordStatus.FALSE.name()
+        )) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("비밀번호가 일치하지 않습니다.");
