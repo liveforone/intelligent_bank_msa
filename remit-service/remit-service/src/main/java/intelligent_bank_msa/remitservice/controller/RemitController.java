@@ -1,19 +1,16 @@
 package intelligent_bank_msa.remitservice.controller;
 
 import intelligent_bank_msa.remitservice.aop.stopwatch.LogExecutionTime;
-import intelligent_bank_msa.remitservice.client.BankBookServiceClient;
-import intelligent_bank_msa.remitservice.dto.bankbook.BankBookResponse;
-import intelligent_bank_msa.remitservice.dto.bankbook.PasswordCheckRequest;
-import intelligent_bank_msa.remitservice.dto.bankbook.PasswordCheckResponse;
-import intelligent_bank_msa.remitservice.dto.bankbook.PasswordStatus;
+import intelligent_bank_msa.remitservice.dto.feign.BankInfoRemitDto;
+import intelligent_bank_msa.remitservice.dto.feign.PasswordStatus;
 import intelligent_bank_msa.remitservice.dto.remit.RemitRequest;
+import intelligent_bank_msa.remitservice.feign.BankBookFeignService;
 import intelligent_bank_msa.remitservice.service.RemitService;
 import intelligent_bank_msa.remitservice.utility.BankBookStateCheck;
 import intelligent_bank_msa.remitservice.utility.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +26,9 @@ import java.util.Objects;
 @Slf4j
 public class RemitController {
 
-    private final BankBookServiceClient bankBookServiceClient;
-    private final CircuitBreakerFactory circuitBreakerFactory;
-    CircuitBreaker circuitBreaker = circuitBreakerFactory.create("remit-service-breaker");
+    private final BankBookFeignService bankBookFeignService;
     private final RemitService remitService;
+    private final CircuitBreakerFactory<?, ?> circuitBreakerFactory;
 
     @PostMapping("/remit")
     @LogExecutionTime
@@ -49,43 +45,34 @@ public class RemitController {
                     .body(errorMessage);
         }
 
-        String bankBookNum = remitRequest.getBankBookNum();
-        BankBookResponse bankBook = circuitBreaker.run(
-                () -> bankBookServiceClient.getBankBookByBankBookNum(bankBookNum),
+        BankInfoRemitDto remitDto = circuitBreakerFactory
+                .create("remit-service-circuit")
+                .run(() -> bankBookFeignService.getBankBook(remitRequest),
                 throwable -> null
         );
 
-        if (CommonUtils.isNull(bankBook)) {
+        if (CommonUtils.isNull(remitDto)) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("존재하지 않는 통장 번호입니다.");
         }
 
-        if (BankBookStateCheck.isSuspendBankBook(bankBook)) {
+        if (BankBookStateCheck.isSuspendSenderBank(remitDto.getSenderBankBookState())) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("정지된 통장입니다.\n정지된 통장으로는 송금이 불가능합니다.");
         }
 
-        BankBookResponse myBankBook = circuitBreaker.run(
-                () -> bankBookServiceClient.getBankBookByBankBookNum(bankBookNum),
-                throwable -> null
-        );
-
-        if (CommonUtils.isNull(bankBook)) {
+        if (BankBookStateCheck.isSuspendReceiverBank(remitDto.getReceiverBankBookState())) {
             return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("내 통장 번호가 잘못되었습니다.");
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("정지된 통장입니다.\n정지된 통장으로는 송금이 불가능합니다.");
         }
 
-        String inputPassword = remitRequest.getPassword();
-        PasswordCheckRequest request = PasswordCheckRequest.createRequest(
-                myBankBook.getBankBookNum(),
-                inputPassword
-        );
-
-        PasswordCheckResponse checkResponse = bankBookServiceClient.checkBankPassword(request);
-        if (Objects.equals(checkResponse.getStatus(), PasswordStatus.FALSE.name())) {
+        if (Objects.equals(
+                remitDto.getPasswordStatus().name(),
+                PasswordStatus.FALSE.name())
+        ) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("비밀번호가 일치하지 않습니다.");

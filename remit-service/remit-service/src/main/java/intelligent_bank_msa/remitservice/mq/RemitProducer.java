@@ -1,8 +1,8 @@
 package intelligent_bank_msa.remitservice.mq;
 
 import com.google.gson.Gson;
-import intelligent_bank_msa.remitservice.dto.bankbook.BalanceRequest;
 import intelligent_bank_msa.remitservice.dto.record.RecordRequest;
+import intelligent_bank_msa.remitservice.dto.remit.BalanceRequest;
 import intelligent_bank_msa.remitservice.dto.remit.RemitRequest;
 import intelligent_bank_msa.remitservice.mq.constant.Topic;
 import lombok.RequiredArgsConstructor;
@@ -19,20 +19,20 @@ public class RemitProducer {
     Gson gson = new Gson();
 
     public void requestIncreaseBalance(RemitRequest remitRequest) {
-        BalanceRequest balanceRequest = BalanceRequest.makeBalanceRequest(
-                remitRequest.getInputMoney(),
-                remitRequest.getBankBookNum()
-        );
+        BalanceRequest balanceRequest = BalanceRequest.builder()
+                .inputMoney(remitRequest.getInputMoney())
+                .bankBookNum(remitRequest.getReceiverBankBookNum())
+                .build();
         String jsonOrder = gson.toJson(balanceRequest);
 
         kafkaTemplate.send(Topic.REQUEST_INCREASE_BALANCE, jsonOrder);
     }
 
     public void requestDecreaseBalance(RemitRequest remitRequest) {
-        BalanceRequest balanceRequest = BalanceRequest.makeBalanceRequest(
-                remitRequest.getInputMoney(),
-                remitRequest.getMyBankBookNum()
-        );
+        BalanceRequest balanceRequest = BalanceRequest.builder()
+                .inputMoney(remitRequest.getInputMoney())
+                .bankBookNum(remitRequest.getSenderBankBookNum())
+                .build();
         String jsonOrder = gson.toJson(balanceRequest);
 
         kafkaTemplate.send(Topic.REQUEST_DECREASE_BALANCE, jsonOrder);

@@ -24,8 +24,9 @@ public class RemitService {
 
     private void remitAndRecordForSender(RemitRequest remitRequest) {
         long inputMoney = remitRequest.getInputMoney();
-        String receiverBankBookNum = remitRequest.getBankBookNum();
-        String senderBankBookNum = remitRequest.getMyBankBookNum();
+        String senderBankBookNum = remitRequest.getSenderBankBookNum();
+        String receiverBankBookNum = remitRequest.getReceiverBankBookNum();
+
 
         remitProducer.requestDecreaseBalance(remitRequest);
         log.info("통장 번호 : " + senderBankBookNum + " 출금 금액 : " + inputMoney);
@@ -43,8 +44,8 @@ public class RemitService {
 
     private void remitAndRecordForReceiver(RemitRequest remitRequest) {
         long inputMoney = remitRequest.getInputMoney();
-        String senderBankBookNum = remitRequest.getBankBookNum();
-        String receiverBankBookNum = remitRequest.getMyBankBookNum();
+        String senderBankBookNum = remitRequest.getSenderBankBookNum();
+        String receiverBankBookNum = remitRequest.getReceiverBankBookNum();
 
         remitProducer.requestIncreaseBalance(remitRequest);
         log.info("통장 번호 : " + receiverBankBookNum + " 입금 금액 : " + inputMoney);

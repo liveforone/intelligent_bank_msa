@@ -14,10 +14,9 @@ public class RemitRequest {
     private long inputMoney;
 
     @Size(min = 13, max = 13, message = "계좌번호는 13자리입니다. 정확히 입력해주세요.")
-    private String bankBookNum;
+    private String receiverBankBookNum;
+    private String senderBankBookNum;
 
     @NotBlank(message = "비밀번호를 정확히 입력해주세요.")
     private String password;
-
-    private String myBankBookNum;
 }
