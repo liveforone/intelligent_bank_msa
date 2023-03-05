@@ -12,6 +12,7 @@ import intelligent_bank_msa.atmservice.utility.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -28,13 +29,14 @@ public class AtmController {
 
     private final AtmService atmService;
     private final BankBookFeignService bankBookFeignService;
+    private final CircuitBreakerFactory<?, ?> circuitBreakerFactory;
 
     @PostMapping("/deposit")
     @LogExecutionTime
     public ResponseEntity<?> depositAtm(
             @RequestBody @Valid AtmRequest atmRequest,
             BindingResult bindingResult
-    ) throws JsonProcessingException {
+    ) {
         if (bindingResult.hasErrors()) {
             String errorMessage = Objects
                     .requireNonNull(bindingResult.getFieldError())
@@ -44,7 +46,11 @@ public class AtmController {
                     .body(errorMessage);
         }
 
-        BankInfoAtmDto bankBook = bankBookFeignService.getBankBook(atmRequest);
+        BankInfoAtmDto bankBook = circuitBreakerFactory
+                .create("atm-service-circuit")
+                .run(() -> bankBookFeignService.getBankBook(atmRequest),
+                        throwable -> null
+                );
 
         if (CommonUtils.isNull(bankBook.getBankBookNum())) {
             return ResponseEntity
@@ -90,7 +96,11 @@ public class AtmController {
                     .body(errorMessage);
         }
 
-        BankInfoAtmDto bankBook = bankBookFeignService.getBankBook(atmRequest);
+        BankInfoAtmDto bankBook = circuitBreakerFactory
+                .create("atm-service-circuit")
+                .run(() -> bankBookFeignService.getBankBook(atmRequest),
+                        throwable -> null
+                );
 
         if (CommonUtils.isNull(bankBook.getBankBookNum())) {
             return ResponseEntity
