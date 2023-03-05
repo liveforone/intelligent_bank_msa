@@ -139,6 +139,12 @@ msa에서 집중하고 중요한 부분은 두가지인데,
 다른 서비스를 참조하거나 다른 서비스와 반드시 엮여 있는 서비스들을 상당히 피곤해진다.
 msa의 테스트에 관해서는 더욱 고민해야겠다.
 
+msa로 제작시 주의 점은 4가지
+fallback controller
+feign controller
+kafka
+circuit breaker
+
 [할것]
 1. [위키] 위키 이전
 2. [문서] 위키 수정 및 문서 추가 + 정리
