@@ -27,22 +27,22 @@
 
 # 4. 전체 문서 위키주소
 ### a. 프로젝트 소개
-* [프로젝트 소개]()
+* [프로젝트 소개](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%93%A4%EC%96%B4%EA%B0%80%EB%A9%B0)
 ### b. 아키텍처 설계
-* [아키텍처 설계 및 마이그레이션 이유]()
+* [아키텍처 설계 및 마이그레이션 이유](https://github.com/liveforone/intelligent_bank_msa/wiki/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%84%A4%EA%B3%84-%EB%B0%8F-%EB%A7%88%EC%9D%B4%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%85%98-%EC%9D%B4%EC%9C%A0)
 ### c. 도메인별 위키
-* [회원서비스]()
-* [통장서비스]()
-* [거래내역서비스]()
-* [송금서비스]()
-* [ATM서비스]()
-* [정산통계서비스]()
+* [회원 서비스](https://github.com/liveforone/intelligent_bank_msa/wiki/%ED%9A%8C%EC%9B%90%EC%8B%9C%EC%8A%A4%ED%85%9C)
+* [통장 서비스](https://github.com/liveforone/intelligent_bank_msa/wiki/%ED%86%B5%EC%9E%A5%EC%84%9C%EB%B9%84%EC%8A%A4)
+* [거래내역 서비스](https://github.com/liveforone/intelligent_bank_msa/wiki/%EA%B1%B0%EB%9E%98%EB%82%B4%EC%97%AD-%EC%84%9C%EB%B9%84%EC%8A%A4)
+* [송금 서비스](https://github.com/liveforone/intelligent_bank_msa/wiki/%EC%86%A1%EA%B8%88-%EC%84%9C%EB%B9%84%EC%8A%A4)
+* [ATM 서비스](https://github.com/liveforone/intelligent_bank_msa/wiki/ATM-%EC%84%9C%EB%B9%84%EC%8A%A4)
+* [정산통계 서비스](https://github.com/liveforone/intelligent_bank_msa/wiki/%EC%A0%95%EC%82%B0-%ED%86%B5%EA%B3%84-%EC%84%9C%EB%B9%84%EC%8A%A4)
 ### d. 데이터간 통신
-* [데이터 통신 전략]()
-* [카프카 활용 전략]()
-* [Feign Client 활용 전략]()
+* [데이터 통신 전략](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%86%B5%EC%8B%A0-%EC%A0%84%EB%9E%B5)
+* [카프카 활용 전략](https://github.com/liveforone/intelligent_bank_msa/wiki/%EC%B9%B4%ED%94%84%EC%B9%B4-%ED%99%9C%EC%9A%A9-%EC%A0%84%EB%9E%B5)
+* [Feign Client 활용 전략](https://github.com/liveforone/intelligent_bank_msa/wiki/Feign-Client-%ED%99%9C%EC%9A%A9-%EC%A0%84%EB%9E%B5)
 ### e. 데이터 베이스 설계
-* [데이터 베이스 설계 위키]()
+* [데이터 베이스 설계 위키](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%84%A4%EA%B3%84-%EB%B0%8F-%EC%9B%90%EC%B9%99)
 * [Read-Only DB]()
 ### f. 고민한 점
 * [상세한 날짜로 조회하려면 어떻게 해야할까?(복잡한 조건절)]()
@@ -68,25 +68,12 @@
 * [문서화 가이드](https://github.com/liveforone/study/blob/main/%5B%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EA%B0%80%EC%9D%B4%EB%93%9C%5D/l.%20%EB%AC%B8%EC%84%9C%ED%99%94%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
 * [조건이 복잡한 쿼리에서는 컬럼을 작게 쪼개라](https://github.com/liveforone/study/blob/main/%5B%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EA%B0%80%EC%9D%B4%EB%93%9C%5D/m.%20%EC%A1%B0%EA%B1%B4%EC%9D%B4%20%EB%B3%B5%EC%9E%A1%ED%95%9C%20%EC%BF%BC%EB%A6%AC%EC%97%90%EC%84%9C%EB%8A%94%20%EC%BB%AC%EB%9F%BC%EC%9D%84%20%EC%9E%91%EA%B2%8C%20%EC%AA%BC%EA%B0%9C%EB%9D%BC.md)
 
-[kafka 사용처] - 서비스간 통신
-kafka는 데이터를 조회하는 역할로써는 좋지 않다.
-누군가로부터 메세지를 받아서 조회하는 용도로 쓸때에는 
-feign client를 사용하자.
-즉 최종 사용처가 조회(select)라면 사용하지 않는다.
-kafka는 최종사용처가 추가/변경/삭제(create, update, delete)인경우에는 아주 좋다.
-특히나 조인이 필요해서 read-only db를 넣고 data를 동기화 하는 상황에서는 비동기로 데이터 sync를 맞추는데에 이만한 것이 없다!!
+[인덱스]
+통장 서비스에 email에도 인덱스 추가
 
-문서화 시에 디렉토리 구조를 dto, controller로 둿다가
-각 도메인 별로 뺏다가 결국 마이크로 서비스로 변경한 그 히스토리를 잘 기재하기
 
-현재 feign의 문제점은 요청하는 http method와 같은 메소드를 가지고 있어야한다는 것이다.
-post 요청 -> feign get사용 이 불가하는 것이다.
-post 요청 -> feign post 사용 해야하만 가능하다.
-마치 트랜잭션같다. http method가 전이가 된다.
-하나의 http request안에서 feign을 호출하게되면 같은 http method로 전이가 된다. 따라서 method가 다르다면 feign이 호출되지 않는다.
-이 부분이 결정적으로 feign이 가지고 있는 단점이고, 이를 잘 이용해야한다.
-feign을 반드시 사용해야하는 조회 부분에서는 이를 더욱 주의해야한다.
-불가피하게 알맞지 않은 http method를 사용시 반드시 문서로 남긴다.
+
+
 
 feign과 마찬가지로 api gateway에 거는 circuit breaker도 마찬가지이다.
 get, post, patch등 해당 서비스에서 쓰이는 http method에 대한 모든 fallback controller를 만들어야한다.
@@ -106,27 +93,9 @@ kafka 커텍트를 사용하여 sync를 맞춰도 되지만, 아직은 사용하
 이렇게 동기화 시킨 데이터는 오로지 조회(read)용도로만 사용하며, 
 다른 서비스에서 지속적으로 데이터를 가져오는 것이 아니라 바로바로 꺼내서 사용할 수 있어서 성능상과 전체적인 코드 구조에 큰 이점을 가져다 준다.
 
-카프카 mq는 cqrs에서 c, 즉 command(명령)를 담당한다.
-커맨드에만 써야한다.(반드시)
-kafka와 같은 mq는 명령을 하기에, 즉 insert, update, delete와 같은 명령을 하기에 적합하다.
-직접 사용을 해보니 데이터를 받아서 그 값을 꺼내서 사용에게 돌려주거나, 
-또는 가공을 해서 사용자에게 돌려주거나,
-마지막으로 값으로 validation check을 하는 등의 행위는 잘 되지 않고 오히려 복잡해진다.
-이러한 이유로 mq는 command만 쓰자.
-q 쿼리에서는 자원소모가 너무 크면 read-only db를 쓰던지, 그게 아니라면 페인클라이언트를 사용해야한다.
 
-msa가 주는 매력은 참 크다.
-그중 내가 느낀 매력은 모든 아키텍처가 그러했듯 정답은 없다는 것이다.
-그 중에서도 자유도가 참 높은 아키텍처는 msa인것 같다.
-예시로는 db를 서비스와 연결하다가 메세지 중심으로 변경해 메세지 큐에
-모든 crud를 이야하기도 하고,
-read-only db를 놓고 조회쿼리만 날리기도 하거나
-혹은 서비스간 통신 시스템으로 조회를 하는 등,
-서비스의 규모, 자원의 한정량 등 현재의 상황에 맞추어서 언제든지 '변경이 가능하고'
-내 마음대로 또 현재 상태와 규모에 맞게끔 fit하게 튜닝이 가능하다는 점이 msa의 매력이다.
-결론적으로 규모에 맞는 설계와 구현이 가능해진다는 것이다.
-커지거나 작아지는 것에 대해 대응하기가 쉽다.
-단순 스케일링을 넘어서 서비스 구조도, db의 구조까지 유연하게 대응하고 변경하고 대처하는 것이 가능해지는 아키텍처이다.
+
+
 
 msa에서 집중하고 중요한 부분은 두가지인데,
 첫번째는 msa로 결국에 마이그레이션한 이유는 장애처리가 크다.
@@ -153,7 +122,7 @@ circuit breaker
 5. [코드] no offset 리팩터링
 6. [코드] 테스트 코드 작성
 
-페이징의 경우 nooffset을 사용한다.
+페이징의 경우 no offset을 사용한다.
 이때에는 쿼리 스트링을 사용해야하므로 reqeustparam 어노테이션을 활용한다.
 [request param - query string]
 https://kingchan223.tistory.com/58
