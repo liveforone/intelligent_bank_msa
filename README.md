@@ -140,8 +140,8 @@ msa에서 집중하고 중요한 부분은 두가지인데,
 msa의 테스트에 관해서는 더욱 고민해야겠다.
 
 msa로 제작시 주의 점은 4가지
-fallback controller
-feign controller
+fallback controller (http method 전이 : rest의 특성)
+feign controller (http method 전이 : rest의 특성)
 kafka
 circuit breaker
 
