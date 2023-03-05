@@ -1,8 +1,6 @@
 package intelligent_bank_msa.gatewayservice.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -10,14 +8,49 @@ import reactor.core.publisher.Mono;
 public class FallbackController {
 
     @GetMapping("/user")
-    public Mono<String> fallbackUser() {
+    public Mono<String> fallbackUserGet() {
+        String errorMessage = "유저 서비스의 장애로 접근이 불가능합니다."
+                + "\n이용에 불편을 드려 죄송합니다.";
+        return Mono.just(errorMessage);
+    }
+
+    @PostMapping("/user")
+    public Mono<String> fallbackUserPost() {
+        String errorMessage = "유저 서비스의 장애로 접근이 불가능합니다."
+                + "\n이용에 불편을 드려 죄송합니다.";
+        return Mono.just(errorMessage);
+    }
+
+    @PatchMapping("/user")
+    public Mono<String> fallbackUserPatch() {
+        String errorMessage = "유저 서비스의 장애로 접근이 불가능합니다."
+                + "\n이용에 불편을 드려 죄송합니다.";
+        return Mono.just(errorMessage);
+    }
+
+    @DeleteMapping("/user")
+    public Mono<String> fallbackUserDelete() {
         String errorMessage = "유저 서비스의 장애로 접근이 불가능합니다."
                 + "\n이용에 불편을 드려 죄송합니다.";
         return Mono.just(errorMessage);
     }
 
     @GetMapping("/bankbook")
-    public Mono<String> fallbackBankbook() {
+    public Mono<String> fallbackBankbookGet() {
+        String errorMessage = "통장 서비스의 장애로 접근이 불가능합니다."
+                + "\n이용에 불편을 드려 죄송합니다.";
+        return Mono.just(errorMessage);
+    }
+
+    @PostMapping("/bankbook")
+    public Mono<String> fallbackBankbookPost() {
+        String errorMessage = "통장 서비스의 장애로 접근이 불가능합니다."
+                + "\n이용에 불편을 드려 죄송합니다.";
+        return Mono.just(errorMessage);
+    }
+
+    @PatchMapping("/bankbook")
+    public Mono<String> fallbackBankbookPatch() {
         String errorMessage = "통장 서비스의 장애로 접근이 불가능합니다."
                 + "\n이용에 불편을 드려 죄송합니다.";
         return Mono.just(errorMessage);
@@ -30,14 +63,14 @@ public class FallbackController {
         return Mono.just(errorMessage);
     }
 
-    @GetMapping("/atm")
+    @PostMapping("/atm")
     public Mono<String> fallbackAtm() {
         String errorMessage = "ATM 서비스의 장애로 접근이 불가능합니다."
                 + "\n이용에 불편을 드려 죄송합니다.";
         return Mono.just(errorMessage);
     }
 
-    @GetMapping("/remit")
+    @PostMapping("/remit")
     public Mono<String> fallbackRemit() {
         String errorMessage = "송금 서비스의 장애로 접근이 불가능합니다."
                 + "\n이용에 불편을 드려 죄송합니다.";
@@ -45,7 +78,14 @@ public class FallbackController {
     }
 
     @GetMapping("/calculate")
-    public Mono<String> fallbackCalculate() {
+    public Mono<String> fallbackCalculateGet() {
+        String errorMessage = "통계 서비스의 장애로 접근이 불가능합니다."
+                + "\n이용에 불편을 드려 죄송합니다.";
+        return Mono.just(errorMessage);
+    }
+
+    @PostMapping("/calculate")
+    public Mono<String> fallbackCalculatePost() {
         String errorMessage = "통계 서비스의 장애로 접근이 불가능합니다."
                 + "\n이용에 불편을 드려 죄송합니다.";
         return Mono.just(errorMessage);
