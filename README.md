@@ -139,4 +139,10 @@ msa의 테스트에 관해서는 더욱 고민해야겠다.
 3. [문서] 위키 수정 및 문서 추가 + 정리
 4. [문서] DB쿼리에 카피 db도 넣어서 추가 정리
 5. [문서] kafka 호출 command(명령어) 정리
-6. [코드] 테스트 코드 작성
+6. [코드] no offset 리팩터링
+7. [코드] 테스트 코드 작성
+
+페이징의 경우 nooffset을 사용한다.
+이때에는 쿼리 스트링을 사용해야하므로 reqeustparam 어노테이션을 활용한다.
+[request param - query string]
+https://kingchan223.tistory.com/58
