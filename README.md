@@ -88,6 +88,12 @@ post 요청 -> feign post 사용 해야하만 가능하다.
 feign을 반드시 사용해야하는 조회 부분에서는 이를 더욱 주의해야한다.
 불가피하게 알맞지 않은 http method를 사용시 반드시 문서로 남긴다.
 
+feign과 마찬가지로 api gateway에 거는 circuit breaker도 마찬가지이다.
+get, post, patch등 해당 서비스에서 쓰이는 http method에 대한 모든 fallback controller를 만들어야한다.
+rest api 는 status를 전달하는 transfer이다.
+이름 자체에서도 보여주듯 상태를 전달하는 규약이므로 http method라는 상태 또한 당연히 전달된다.
+따라서 fallback controller를 만들때에도, feign controller를 만들때에도 호출하는 메서드 혹은 서비스에서 사용하는 http method와 동일하게 만들어야 정상 작동하는 점을 유의 하자
+
 password encoder는 서비스끼리 혼용해서 쓸수없다.
 bankbook에서 만든 password는 bankbook으로 보내서 pw 판별해야한다.
 이것이 싫다면 암호화 하지 않고 써야한다.
@@ -134,13 +140,12 @@ msa에서 집중하고 중요한 부분은 두가지인데,
 msa의 테스트에 관해서는 더욱 고민해야겠다.
 
 [할것]
-1. [코드] 장애처리, 서킷브레이커등 집중해서 사용하기
-2. [위키] 위키 이전
-3. [문서] 위키 수정 및 문서 추가 + 정리
-4. [문서] DB쿼리에 카피 db도 넣어서 추가 정리
-5. [문서] kafka 호출 command(명령어) 정리
-6. [코드] no offset 리팩터링
-7. [코드] 테스트 코드 작성
+1. [위키] 위키 이전
+2. [문서] 위키 수정 및 문서 추가 + 정리
+3. [문서] DB쿼리에 카피 db도 넣어서 추가 정리
+4. [문서] kafka 호출 command(명령어) 정리
+5. [코드] no offset 리팩터링
+6. [코드] 테스트 코드 작성
 
 페이징의 경우 nooffset을 사용한다.
 이때에는 쿼리 스트링을 사용해야하므로 reqeustparam 어노테이션을 활용한다.
