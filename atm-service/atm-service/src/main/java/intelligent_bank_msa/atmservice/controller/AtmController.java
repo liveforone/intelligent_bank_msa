@@ -52,7 +52,7 @@ public class AtmController {
                         throwable -> null
                 );
 
-        if (CommonUtils.isNull(bankBook.getBankBookNum())) {
+        if (CommonUtils.isNull(bankBook)) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("존재하지 않는 통장 번호입니다.");
@@ -102,7 +102,7 @@ public class AtmController {
                         throwable -> null
                 );
 
-        if (CommonUtils.isNull(bankBook.getBankBookNum())) {
+        if (CommonUtils.isNull(bankBook)) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("존재하지 않는 통장 번호입니다.");
