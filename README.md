@@ -18,7 +18,7 @@
 
 # 3. 설명
 * 비즈니스 도메인은 간편 인터넷 은행입니다.
-* [프로젝트 위키]()를 보시면 상세한 프로젝트 설계와 각 도메인별 api문서, DB설계, ERD, 상세 요구사항, 구현 기술 등이 기재되어있습니다.
+* [프로젝트 위키](https://github.com/liveforone/intelligent_bank_msa/wiki)를 보시면 상세한 프로젝트 설계와 각 도메인별 api문서, DB설계, ERD, 상세 요구사항, 구현 기술 등이 기재되어있습니다.
 * 모든 문서는 위키로 제작하였고, 링크를 달아놓았으니 클릭하셔서 보실 수 있습니다.
 * 해당 프로젝트는 현재 읽고 계신 README의 5번에 기술되어있는  스타일 가이드를 지켜 제작하였습니다.
 * 서버와 DB 부하를 줄이는 스케일러빌리티한 서비스을 만들려고 많이 노력하였습니다.
@@ -41,15 +41,15 @@
 * [데이터 통신 전략](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%86%B5%EC%8B%A0-%EC%A0%84%EB%9E%B5)
 * [카프카 활용 전략](https://github.com/liveforone/intelligent_bank_msa/wiki/%EC%B9%B4%ED%94%84%EC%B9%B4-%ED%99%9C%EC%9A%A9-%EC%A0%84%EB%9E%B5)
 * [Feign Client 활용 전략](https://github.com/liveforone/intelligent_bank_msa/wiki/Feign-Client-%ED%99%9C%EC%9A%A9-%EC%A0%84%EB%9E%B5)
+* [Kafka Command](https://github.com/liveforone/intelligent_bank_msa/wiki/Kafka-Command)
 ### e. 데이터 베이스 설계
 * [데이터 베이스 설계 위키](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%84%A4%EA%B3%84-%EB%B0%8F-%EC%9B%90%EC%B9%99)
-* [Read-Only DB]()
+* [Read-Only DB](https://github.com/liveforone/intelligent_bank_msa/wiki/Read-Only-DB)
 ### f. 고민한 점
-* [상세한 날짜로 조회하려면 어떻게 해야할까?(복잡한 조건절)]()
-* [다른 서비스에서 password를 판별할 수 있을까?]
+* [상세한 날짜로 조회하려면 어떻게 해야할까(복잡한 조건절)?](https://github.com/liveforone/intelligent_bank_msa/wiki/%EC%83%81%EC%84%B8%ED%95%9C-%EB%82%A0%EC%A7%9C%EB%A1%9C-%EC%A1%B0%ED%9A%8C%ED%95%98%EB%A0%A4%EB%A9%B4-%EC%96%B4%EB%96%BB%EA%B2%8C-%ED%95%B4%EC%95%BC%ED%95%A0%EA%B9%8C(%EB%B3%B5%EC%9E%A1%ED%95%9C-%EC%A1%B0%EA%B1%B4%EC%A0%88)%3F)
+* [다른 서비스에서 password를 판별할 수 있을까?](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%8B%A4%EB%A5%B8-%EC%84%9C%EB%B9%84%EC%8A%A4%EC%97%90%EC%84%9C-password%EB%A5%BC-%ED%8C%90%EB%B3%84%ED%95%A0-%EC%88%98-%EC%9E%88%EC%9D%84%EA%B9%8C%3F)
 ### g. 리팩토링 히스토리
-* [리팩토링1]()
-* [리팩토링2 - msa 이전]()
+* [리팩토링1 - 단독 repo](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%811---%EB%8B%A8%EB%8F%85-repo)
 
 # 5. 스타일 가이드
 * 스타일 가이드는 필자가 생각하는 좋은 코드와 필자의 클린코드 철학이 담긴 문서이다.
@@ -68,59 +68,9 @@
 * [문서화 가이드](https://github.com/liveforone/study/blob/main/%5B%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EA%B0%80%EC%9D%B4%EB%93%9C%5D/l.%20%EB%AC%B8%EC%84%9C%ED%99%94%20%EA%B0%80%EC%9D%B4%EB%93%9C.md)
 * [조건이 복잡한 쿼리에서는 컬럼을 작게 쪼개라](https://github.com/liveforone/study/blob/main/%5B%EB%82%98%EB%A7%8C%EC%9D%98%20%EC%8A%A4%ED%83%80%EC%9D%BC%20%EA%B0%80%EC%9D%B4%EB%93%9C%5D/m.%20%EC%A1%B0%EA%B1%B4%EC%9D%B4%20%EB%B3%B5%EC%9E%A1%ED%95%9C%20%EC%BF%BC%EB%A6%AC%EC%97%90%EC%84%9C%EB%8A%94%20%EC%BB%AC%EB%9F%BC%EC%9D%84%20%EC%9E%91%EA%B2%8C%20%EC%AA%BC%EA%B0%9C%EB%9D%BC.md)
 
-[인덱스]
-통장 서비스에 email에도 인덱스 추가
-
-
-
-
-
-feign과 마찬가지로 api gateway에 거는 circuit breaker도 마찬가지이다.
-get, post, patch등 해당 서비스에서 쓰이는 http method에 대한 모든 fallback controller를 만들어야한다.
-rest api 는 status를 전달하는 transfer이다.
-이름 자체에서도 보여주듯 상태를 전달하는 규약이므로 http method라는 상태 또한 당연히 전달된다.
-따라서 fallback controller를 만들때에도, feign controller를 만들때에도 호출하는 메서드 혹은 서비스에서 사용하는 http method와 동일하게 만들어야 정상 작동하는 점을 유의 하자
-
-password encoder는 서비스끼리 혼용해서 쓸수없다.
-bankbook에서 만든 password는 bankbook으로 보내서 pw 판별해야한다.
-이것이 싫다면 암호화 하지 않고 써야한다.
-
-조인, 혹은 하나의 데이터를 많이 참조 하는 경우에는 read-only db를 사용했다.
-통계 서비스가 이러한 방식을 사용했다.
-record를 저장한 후에 record kafka는 통계 서비스로 해당 값을 전달하여 저장시킨다.
-바로바로 통계서비스에 저장명령을 내림으로써 데이터를 동기화 시킨다.
-kafka 커텍트를 사용하여 sync를 맞춰도 되지만, 아직은 사용하지 않고 jpa로 요청을 받을때마다 save처리 해주었다.
-이렇게 동기화 시킨 데이터는 오로지 조회(read)용도로만 사용하며, 
-다른 서비스에서 지속적으로 데이터를 가져오는 것이 아니라 바로바로 꺼내서 사용할 수 있어서 성능상과 전체적인 코드 구조에 큰 이점을 가져다 준다.
-
-
-
-
-
-msa에서 집중하고 중요한 부분은 두가지인데,
-첫번째는 msa로 결국에 마이그레이션한 이유는 장애처리가 크다.
-서비스가 분산되고 db가 분산되다보니깐 유연하게 장애처리할 수 있고 scailability하게 설계가 가능해진다.
-두번째는 데이터이다. 데이터를 가공하고 적절하게 활용하는것이 참 중요하다.
-마이그레이션 한 이유라기 보다는 msa에서 단점은 데이터를 활용하는 것이기 때문이다.
-이 데이터를 어떻게 가공하고, 어떻게 통신하고, 교환할지에 대해 고민하고 생각하는 것이 중요하다.
-
-테스트에 관해서는 할말이 없다. 기존의 모놀리틱 방식에 비해 너무나도 힘들어졌다.
-다른 서비스를 참조하거나 다른 서비스와 반드시 엮여 있는 서비스들을 상당히 피곤해진다.
-msa의 테스트에 관해서는 더욱 고민해야겠다.
-
-msa로 제작시 주의 점은 4가지
-fallback controller (http method 전이 : rest의 특성)
-feign controller (http method 전이 : rest의 특성)
-kafka
-circuit breaker
-
-[할것]
-1. [위키] 위키 이전
-2. [문서] 위키 수정 및 문서 추가 + 정리
-3. [문서] DB쿼리에 카피 db도 넣어서 추가 정리
-4. [문서] kafka 호출 command(명령어) 정리
-5. [코드] no offset 리팩터링
-6. [코드] 테스트 코드 작성
+[할것]  
+1. [코드] no offset 리팩터링
+2. [코드] 테스트 코드 작성
 
 페이징의 경우 no offset을 사용한다.
 이때에는 쿼리 스트링을 사용해야하므로 reqeustparam 어노테이션을 활용한다.
