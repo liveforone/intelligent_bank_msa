@@ -3,7 +3,9 @@ package intelligent_bank_msa.recordservice.utility;
 import intelligent_bank_msa.recordservice.dto.RecordRequest;
 import intelligent_bank_msa.recordservice.dto.RecordResponse;
 import intelligent_bank_msa.recordservice.model.Record;
-import org.springframework.data.domain.Page;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RecordMapper {
 
@@ -29,7 +31,10 @@ public class RecordMapper {
                 .build();
     }
 
-    public static Page<RecordResponse> entityToDtoPage(Page<Record> records) {
-        return records.map(RecordMapper::dtoBuilder);
+    public static List<RecordResponse> entityToDtoList(List<Record> records) {
+        return records
+                .stream()
+                .map(RecordMapper::dtoBuilder)
+                .collect(Collectors.toList());
     }
 }

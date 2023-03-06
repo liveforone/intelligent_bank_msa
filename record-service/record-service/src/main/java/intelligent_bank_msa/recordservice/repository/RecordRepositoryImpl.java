@@ -1,12 +1,10 @@
 package intelligent_bank_msa.recordservice.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import intelligent_bank_msa.recordservice.model.QRecord;
 import intelligent_bank_msa.recordservice.model.Record;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,17 +14,24 @@ import java.util.List;
 public class RecordRepositoryImpl implements RecordRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    QRecord record = QRecord.record;
 
-    public Page<Record> findRecordsByBankBookNum(String bankBookNum, Pageable pageable) {
-        QRecord record = QRecord.record;
-
-        List<Record> content = queryFactory.selectFrom(record)
-                .where(record.bankBookNum.eq(bankBookNum))
+    public List<Record> findRecordsByBankBookNum(String bankBookNum, Long recordId, int pageSize) {
+        return queryFactory.selectFrom(record)
+                .where(
+                        record.bankBookNum.eq(bankBookNum),
+                        ltBookId(recordId)
+                )
                 .orderBy(record.id.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageSize)
                 .fetch();
+    }
 
-        return new PageImpl<>(content, pageable, content.size());
+    private BooleanExpression ltBookId(Long recordId) {
+        if (recordId == null) {
+            return null;
+        }
+
+        return record.id.lt(recordId);
     }
 }
