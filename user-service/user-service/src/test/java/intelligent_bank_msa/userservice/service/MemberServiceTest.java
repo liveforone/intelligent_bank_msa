@@ -34,7 +34,7 @@ class MemberServiceTest {
 
     @Test
     @Transactional
-    void adminSignup() {
+    void adminSignupTest() {
         //given
         String email = "admin@intelligentBank.com";
         String password = "1111";
@@ -57,7 +57,7 @@ class MemberServiceTest {
 
     @Test
     @Transactional
-    void updatePassword() {
+    void updatePasswordTest() {
         //given
         String email = "aa1111@gmail.com";
         String password = "1111";
