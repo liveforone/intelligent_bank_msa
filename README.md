@@ -48,6 +48,7 @@
 ### f. 고민한 점
 * [상세한 날짜로 조회하려면 어떻게 해야할까(복잡한 조건절)?](https://github.com/liveforone/intelligent_bank_msa/wiki/%EC%83%81%EC%84%B8%ED%95%9C-%EB%82%A0%EC%A7%9C%EB%A1%9C-%EC%A1%B0%ED%9A%8C%ED%95%98%EB%A0%A4%EB%A9%B4-%EC%96%B4%EB%96%BB%EA%B2%8C-%ED%95%B4%EC%95%BC%ED%95%A0%EA%B9%8C(%EB%B3%B5%EC%9E%A1%ED%95%9C-%EC%A1%B0%EA%B1%B4%EC%A0%88)%3F)
 * [다른 서비스에서 password를 판별할 수 있을까?](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%8B%A4%EB%A5%B8-%EC%84%9C%EB%B9%84%EC%8A%A4%EC%97%90%EC%84%9C-password%EB%A5%BC-%ED%8C%90%EB%B3%84%ED%95%A0-%EC%88%98-%EC%9E%88%EC%9D%84%EA%B9%8C%3F)
+* [페이징 성능을 높일 순 없을까?](https://github.com/liveforone/intelligent_bank_msa/wiki/%ED%8E%98%EC%9D%B4%EC%A7%95-%EC%84%B1%EB%8A%A5%EC%9D%84-%EB%86%92%EC%9D%BC-%EC%88%9C-%EC%97%86%EC%9D%84%EA%B9%8C%3F)
 ### g. 리팩토링 히스토리
 * [리팩토링1 - 단독 repo](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%811---%EB%8B%A8%EB%8F%85-repo)
 
