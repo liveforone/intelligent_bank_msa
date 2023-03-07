@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://testdb:3306/intelligent_bankbook?serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=UTF-8
     username: root
-    password: 159624
+    password: 1111
   jpa:
     hibernate:
       ddl-auto: create
