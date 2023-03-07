@@ -3,18 +3,18 @@
 
 # 1. 프로젝트 소개
 * 이 프로젝트는 [모놀리틱](https://github.com/liveforone/intelligent_bank)으로 먼저 구현된 간편 인터넷 은행 서비스 프로젝트를
-* msa로 마이그레이션 한 프로젝트 입니다.
+* MSA로 마이그레이션 한 프로젝트 입니다.
 
 # 2. 사용 기술 스택
-* Spring Boot 3.0.3
+* Spring Boot 3.0.3 & Spring Cloud
 * Java17
-* Spring Data Jpa & Query Dsl
+* Spring Data Jpa & Query Dsl & MySql
 * Spring Security & Jwt
+* Junit5
 * Apache Commons Lang3
-* Kafka, Zookeper, Open Feign CLient
-* MySql
+* Kafka, Zookeper, Open Feign Client
+* Docker & Docker-compose
 * LomBok
-* 이외에도 msa에 필요한 Spring Cloud 기술들이 사용되었습니다.
 
 # 3. 설명
 * 비즈니스 도메인은 간편 인터넷 은행입니다.
