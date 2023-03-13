@@ -3,7 +3,7 @@ package intelligent_bank_msa.userservice.utility;
 
 import intelligent_bank_msa.userservice.dto.MemberResponse;
 import intelligent_bank_msa.userservice.dto.MemberSignupRequest;
-import intelligent_bank_msa.userservice.model.Member;
+import intelligent_bank_msa.userservice.domain.Member;
 
 public class MemberMapper {
 

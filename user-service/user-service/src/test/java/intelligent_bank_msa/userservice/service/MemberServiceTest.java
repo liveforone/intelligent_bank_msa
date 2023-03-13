@@ -1,8 +1,8 @@
 package intelligent_bank_msa.userservice.service;
 
 import intelligent_bank_msa.userservice.dto.MemberSignupRequest;
-import intelligent_bank_msa.userservice.model.Member;
-import intelligent_bank_msa.userservice.model.Role;
+import intelligent_bank_msa.userservice.domain.Member;
+import intelligent_bank_msa.userservice.domain.Role;
 import intelligent_bank_msa.userservice.validator.MemberPasswordValidator;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class MemberServiceTest {

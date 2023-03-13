@@ -1,7 +1,7 @@
 package intelligent_bank_msa.userservice.validator;
 
 import intelligent_bank_msa.userservice.dto.MemberLoginRequest;
-import intelligent_bank_msa.userservice.model.Member;
+import intelligent_bank_msa.userservice.domain.Member;
 import intelligent_bank_msa.userservice.service.MemberService;
 import intelligent_bank_msa.userservice.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;

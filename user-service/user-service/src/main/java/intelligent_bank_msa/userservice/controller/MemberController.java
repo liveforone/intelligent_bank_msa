@@ -2,8 +2,8 @@ package intelligent_bank_msa.userservice.controller;
 
 import intelligent_bank_msa.userservice.dto.*;
 import intelligent_bank_msa.userservice.jwt.TokenInfo;
-import intelligent_bank_msa.userservice.model.Member;
-import intelligent_bank_msa.userservice.model.Role;
+import intelligent_bank_msa.userservice.domain.Member;
+import intelligent_bank_msa.userservice.domain.Role;
 import intelligent_bank_msa.userservice.service.MemberService;
 import intelligent_bank_msa.userservice.utility.MemberMapper;
 import intelligent_bank_msa.userservice.validator.MemberPasswordValidator;

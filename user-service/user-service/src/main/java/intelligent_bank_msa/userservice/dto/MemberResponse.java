@@ -1,6 +1,6 @@
 package intelligent_bank_msa.userservice.dto;
 
-import intelligent_bank_msa.userservice.model.Role;
+import intelligent_bank_msa.userservice.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

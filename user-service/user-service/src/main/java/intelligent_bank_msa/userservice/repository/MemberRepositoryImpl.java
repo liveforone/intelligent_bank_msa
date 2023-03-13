@@ -1,8 +1,8 @@
 package intelligent_bank_msa.userservice.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import intelligent_bank_msa.userservice.model.Member;
-import intelligent_bank_msa.userservice.model.QMember;
+import intelligent_bank_msa.userservice.domain.Member;
+import intelligent_bank_msa.userservice.domain.QMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

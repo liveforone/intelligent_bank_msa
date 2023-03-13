@@ -1,4 +1,4 @@
-package intelligent_bank_msa.userservice.model;
+package intelligent_bank_msa.userservice.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

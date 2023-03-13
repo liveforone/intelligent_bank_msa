@@ -1,7 +1,7 @@
 package intelligent_bank_msa.userservice.service;
 
-import intelligent_bank_msa.userservice.model.Member;
-import intelligent_bank_msa.userservice.model.Role;
+import intelligent_bank_msa.userservice.domain.Member;
+import intelligent_bank_msa.userservice.domain.Role;
 import intelligent_bank_msa.userservice.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
