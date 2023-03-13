@@ -1,6 +1,6 @@
 package intelligent_bank_msa.bankbookservice.dto.bankbook;
 
-import intelligent_bank_msa.bankbookservice.model.BankBookState;
+import intelligent_bank_msa.bankbookservice.domain.BankBookState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

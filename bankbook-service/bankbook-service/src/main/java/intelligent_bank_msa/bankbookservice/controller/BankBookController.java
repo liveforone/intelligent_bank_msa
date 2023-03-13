@@ -3,7 +3,7 @@ package intelligent_bank_msa.bankbookservice.controller;
 import intelligent_bank_msa.bankbookservice.aop.stopwatch.LogExecutionTime;
 import intelligent_bank_msa.bankbookservice.dto.bankbook.BankBookRequest;
 import intelligent_bank_msa.bankbookservice.dto.bankbook.SuspendRequest;
-import intelligent_bank_msa.bankbookservice.model.BankBook;
+import intelligent_bank_msa.bankbookservice.domain.BankBook;
 import intelligent_bank_msa.bankbookservice.service.BankBookService;
 import intelligent_bank_msa.bankbookservice.utility.BankBookMapper;
 import intelligent_bank_msa.bankbookservice.utility.BankBookPassword;

@@ -2,15 +2,13 @@ package intelligent_bank_msa.bankbookservice.service;
 
 import intelligent_bank_msa.bankbookservice.dto.bankbook.BankBookRequest;
 import intelligent_bank_msa.bankbookservice.dto.bankbook.SuspendRequest;
-import intelligent_bank_msa.bankbookservice.model.BankBookState;
+import intelligent_bank_msa.bankbookservice.domain.BankBookState;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class BankBookServiceTest {

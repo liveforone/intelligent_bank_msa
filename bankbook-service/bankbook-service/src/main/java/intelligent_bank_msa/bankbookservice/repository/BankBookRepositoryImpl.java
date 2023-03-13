@@ -1,9 +1,9 @@
 package intelligent_bank_msa.bankbookservice.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import intelligent_bank_msa.bankbookservice.model.BankBook;
-import intelligent_bank_msa.bankbookservice.model.BankBookState;
-import intelligent_bank_msa.bankbookservice.model.QBankBook;
+import intelligent_bank_msa.bankbookservice.domain.BankBook;
+import intelligent_bank_msa.bankbookservice.domain.BankBookState;
+import intelligent_bank_msa.bankbookservice.domain.QBankBook;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

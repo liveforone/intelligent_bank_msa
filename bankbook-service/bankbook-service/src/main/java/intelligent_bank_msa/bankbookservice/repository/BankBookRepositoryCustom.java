@@ -1,6 +1,6 @@
 package intelligent_bank_msa.bankbookservice.repository;
 
-import intelligent_bank_msa.bankbookservice.model.BankBook;
+import intelligent_bank_msa.bankbookservice.domain.BankBook;
 
 public interface BankBookRepositoryCustom {
     BankBook findOneByEmail(String email);

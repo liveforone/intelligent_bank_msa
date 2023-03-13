@@ -1,6 +1,6 @@
 package intelligent_bank_msa.bankbookservice.dto.bankbook;
 
-import intelligent_bank_msa.bankbookservice.model.BankBookState;
+import intelligent_bank_msa.bankbookservice.domain.BankBookState;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

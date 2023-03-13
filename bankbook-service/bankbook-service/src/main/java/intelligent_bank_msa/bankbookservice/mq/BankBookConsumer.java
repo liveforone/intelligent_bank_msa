@@ -3,7 +3,7 @@ package intelligent_bank_msa.bankbookservice.mq;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import intelligent_bank_msa.bankbookservice.dto.kafka.KafkaErrorDto;
-import intelligent_bank_msa.bankbookservice.model.BankBook;
+import intelligent_bank_msa.bankbookservice.domain.BankBook;
 import intelligent_bank_msa.bankbookservice.mq.constant.KafkaLog;
 import intelligent_bank_msa.bankbookservice.mq.constant.KafkaMessage;
 import intelligent_bank_msa.bankbookservice.mq.constant.Topic;
