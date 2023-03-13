@@ -2,7 +2,7 @@ package intelligent_bank_msa.recordservice.utility;
 
 import intelligent_bank_msa.recordservice.dto.RecordRequest;
 import intelligent_bank_msa.recordservice.dto.RecordResponse;
-import intelligent_bank_msa.recordservice.model.Record;
+import intelligent_bank_msa.recordservice.domain.Record;
 
 import java.util.List;
 import java.util.stream.Collectors;

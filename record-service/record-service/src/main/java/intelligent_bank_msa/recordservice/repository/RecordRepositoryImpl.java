@@ -2,8 +2,8 @@ package intelligent_bank_msa.recordservice.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import intelligent_bank_msa.recordservice.model.QRecord;
-import intelligent_bank_msa.recordservice.model.Record;
+import intelligent_bank_msa.recordservice.domain.QRecord;
+import intelligent_bank_msa.recordservice.domain.Record;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

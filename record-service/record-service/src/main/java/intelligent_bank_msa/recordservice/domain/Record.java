@@ -1,4 +1,4 @@
-package intelligent_bank_msa.recordservice.model;
+package intelligent_bank_msa.recordservice.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

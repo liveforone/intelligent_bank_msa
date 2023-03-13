@@ -1,6 +1,6 @@
 package intelligent_bank_msa.recordservice.dto;
 
-import intelligent_bank_msa.recordservice.model.RecordState;
+import intelligent_bank_msa.recordservice.domain.RecordState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
