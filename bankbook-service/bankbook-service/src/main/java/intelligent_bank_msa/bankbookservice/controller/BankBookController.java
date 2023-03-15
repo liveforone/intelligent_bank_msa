@@ -57,7 +57,7 @@ public class BankBookController {
         }
 
         bankBookService.saveBankBook(bankBookRequest);
-        log.info("통장 개설 완료");
+        log.info(ControllerLog.CREATE_LOG.getValue());
 
         return RestResponse.createSuccess();
     }
@@ -77,7 +77,7 @@ public class BankBookController {
         }
 
         bankBookService.suspendByEmail(suspendRequest);
-        log.info("통장 정지 성공");
+        log.info(ControllerLog.SUSPEND_LOG.getValue());
 
         return RestResponse.suspendSuccess();
     }
@@ -99,7 +99,7 @@ public class BankBookController {
         }
 
         bankBookService.cancelSuspendByEmail(suspendRequest);
-        log.info("통장 정지 해제 성공");
+        log.info(ControllerLog.CANCEL_SUSPEND_LOG.getValue());
 
         return RestResponse.cancelSuspendSuccess();
     }
