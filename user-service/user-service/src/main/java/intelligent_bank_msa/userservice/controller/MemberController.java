@@ -2,11 +2,8 @@ package intelligent_bank_msa.userservice.controller;
 
 import intelligent_bank_msa.userservice.dto.*;
 import intelligent_bank_msa.userservice.jwt.TokenInfo;
-import intelligent_bank_msa.userservice.domain.Member;
 import intelligent_bank_msa.userservice.domain.Role;
 import intelligent_bank_msa.userservice.service.MemberService;
-import intelligent_bank_msa.userservice.utility.MemberMapper;
-import intelligent_bank_msa.userservice.validator.MemberPasswordValidator;
 import intelligent_bank_msa.userservice.validator.MemberValidator;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -30,17 +27,17 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberValidator memberValidator;
 
-    @GetMapping("/")
+    @GetMapping(MemberUrl.HOME)
     public ResponseEntity<?> home() {
         return ResponseEntity.ok("home");
     }
 
-    @GetMapping("/signup")
+    @GetMapping(MemberUrl.SIGNUP)
     public ResponseEntity<?> signupPage() {
         return ResponseEntity.ok("가입할 이메일과 비밀번호 그리고 실명을 입력해주세요");
     }
 
-    @PostMapping("/signup")
+    @PostMapping(MemberUrl.SIGNUP)
     public ResponseEntity<?> signup(
             @RequestBody @Valid MemberSignupRequest memberSignupRequest,
             BindingResult bindingResult
@@ -68,12 +65,12 @@ public class MemberController {
                 .body("반갑습니다. 회원가입에 성공하셨습니다.");
     }
 
-    @GetMapping("/login")
+    @GetMapping(MemberUrl.LOGIN)
     public ResponseEntity<?> loginPage() {
         return ResponseEntity.ok("이메일과 비밀번호를 입력하세요.");
     }
 
-    @PostMapping("/login")
+    @PostMapping(MemberUrl.LOGIN)
     public ResponseEntity<?> login(
             @RequestBody @Valid MemberLoginRequest memberLoginRequest,
             BindingResult bindingResult,
@@ -102,14 +99,14 @@ public class MemberController {
         }
     }
 
-    @GetMapping("/my-page")
+    @GetMapping(MemberUrl.MY_PAGE)
     public ResponseEntity<MemberResponse> myPage(Principal principal) {
-        Member member = memberService.getMemberEntity(principal.getName());
+        MemberResponse member = memberService.getMemberEntity(principal.getName());
 
-        return ResponseEntity.ok(MemberMapper.dtoBuilder(member));
+        return ResponseEntity.ok(member);
     }
 
-    @PatchMapping("/change-email")
+    @PatchMapping(MemberUrl.CHANGE_EMAIL)
     public ResponseEntity<?> changeEmail(
             @RequestBody @Valid ChangeEmailRequest changeEmailRequest,
             BindingResult bindingResult,
@@ -137,7 +134,7 @@ public class MemberController {
         return ResponseEntity.ok("이메일이 변경되었습니다.");
     }
 
-    @PatchMapping("/change-password")
+    @PatchMapping(MemberUrl.CHANGE_PASSWORD)
     public ResponseEntity<?> changePassword(
             @RequestBody @Valid ChangePasswordRequest changePasswordRequest,
             BindingResult bindingResult,
@@ -152,46 +149,41 @@ public class MemberController {
                     .body(errorMessage);
         }
 
-        Member foundMember = memberService.getMemberEntity(principal.getName());
-
         String inputPw = changePasswordRequest.getOldPassword();
-        String originalPw = foundMember.getPassword();
-        if (MemberPasswordValidator.isNotMatchingPassword(inputPw, originalPw)) {
+        String email = principal.getName();
+        if (memberValidator.isNotMatchingPassword(inputPw, email)) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("비밀번호가 다릅니다. 다시 입력해주세요.");
         }
 
         String requestPw = changePasswordRequest.getNewPassword();
-        memberService.updatePassword(foundMember.getId(), requestPw);
+        memberService.updatePassword(requestPw, email);
         log.info("비밀번호 변경 성공");
 
         return ResponseEntity.ok("비밀번호가 변경되었습니다.");
     }
-    @DeleteMapping("/withdraw")
+    @DeleteMapping(MemberUrl.WITHDRAW)
     public ResponseEntity<?> withdraw(
             @RequestBody String password,
             Principal principal
     ) {
-        Member foundMember = memberService.getMemberEntity(principal.getName());
-
-        String originalPw = foundMember.getPassword();
-        if (MemberPasswordValidator.isNotMatchingPassword(password, originalPw)) {
+        String email = principal.getName();
+        if (memberValidator.isNotMatchingPassword(password, email)) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body("비밀번호가 다릅니다. 다시 입력해주세요.");
         }
 
-        Long memberId = foundMember.getId();
-        log.info("회원 : " + memberId + " 탈퇴 성공");
-        memberService.deleteUser(memberId);
+        memberService.deleteUser(email);
+        log.info("회원 : " + email + " 탈퇴 성공");
 
         return ResponseEntity.ok("그동안 서비스를 이용해주셔서 감사합니다.");
     }
 
-    @GetMapping("/admin")
+    @GetMapping(MemberUrl.ADMIN)
     public ResponseEntity<?> adminPage(Principal principal) {
-        Member foundMember = memberService.getMemberEntity(principal.getName());
+        MemberResponse foundMember = memberService.getMemberEntity(principal.getName());
 
         if (!foundMember.getAuth().equals(Role.ADMIN)) {
             log.error("어드민 페이지 접속에 실패했습니다.");
@@ -200,13 +192,13 @@ public class MemberController {
                     .body("접근 권한이 없습니다.");
         }
 
-        List<Member> allMembers = memberService.getAllMemberForAdmin();
+        List<MemberResponse> allMembers = memberService.getAllMemberForAdmin();
         log.info("어드민이 어드민 페이지에 접속했습니다.");
 
         return ResponseEntity.ok(allMembers);
     }
 
-    @GetMapping("/prohibition")
+    @GetMapping(MemberUrl.PROHIBITION)
     public ResponseEntity<?> prohibition() {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)

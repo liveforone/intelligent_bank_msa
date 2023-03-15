@@ -1,5 +1,6 @@
 package intelligent_bank_msa.userservice.config;
 
+import intelligent_bank_msa.userservice.controller.MemberUrl;
 import intelligent_bank_msa.userservice.jwt.JwtAuthenticationFilter;
 import intelligent_bank_msa.userservice.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private static final String ADMIN_ROLE = "ADMIN";
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -36,14 +39,14 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(
-                                "/",
-                                "/signup",
-                                "/login",
-                                "/actuator/**"
+                                MemberUrl.HOME,
+                                MemberUrl.SIGNUP,
+                                MemberUrl.LOGIN,
+                                MemberUrl.ACTUATOR
                         ).permitAll()
                         .requestMatchers(
-                                "/admin/**"
-                        ).hasRole("ADMIN")
+                                MemberUrl.ADMIN_ALL
+                        ).hasRole(ADMIN_ROLE)
                         .anyRequest().authenticated()
                         .and()
                         .addFilterBefore(
@@ -52,11 +55,11 @@ public class SecurityConfig {
                         )
                 )
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-                .logoutSuccessUrl("/")
+                .logoutRequestMatcher(new AntPathRequestMatcher(MemberUrl.LOGOUT))
+                .logoutSuccessUrl(MemberUrl.HOME)
                 .and()
                 .exceptionHandling()
-                .accessDeniedPage("/member/prohibition");
+                .accessDeniedPage(MemberUrl.PROHIBITION);
         return http.build();
     }
 }
