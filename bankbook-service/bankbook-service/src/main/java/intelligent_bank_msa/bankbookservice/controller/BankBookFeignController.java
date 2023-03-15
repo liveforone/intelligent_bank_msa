@@ -1,5 +1,6 @@
 package intelligent_bank_msa.bankbookservice.controller;
 
+import intelligent_bank_msa.bankbookservice.controller.constant.BankBookUrl;
 import intelligent_bank_msa.bankbookservice.dto.feign.*;
 import intelligent_bank_msa.bankbookservice.domain.BankBook;
 import intelligent_bank_msa.bankbookservice.service.BankBookService;

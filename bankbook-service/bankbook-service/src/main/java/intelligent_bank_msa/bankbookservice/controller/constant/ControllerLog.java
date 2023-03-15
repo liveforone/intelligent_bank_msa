@@ -1,4 +1,4 @@
-package intelligent_bank_msa.bankbookservice.controller;
+package intelligent_bank_msa.bankbookservice.controller.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

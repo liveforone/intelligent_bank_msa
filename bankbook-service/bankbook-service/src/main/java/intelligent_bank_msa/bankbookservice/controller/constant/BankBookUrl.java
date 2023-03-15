@@ -1,4 +1,4 @@
-package intelligent_bank_msa.bankbookservice.controller;
+package intelligent_bank_msa.bankbookservice.controller.constant;
 
 public class BankBookUrl {
 

@@ -1,4 +1,4 @@
-package intelligent_bank_msa.bankbookservice.controller.util;
+package intelligent_bank_msa.bankbookservice.controller.restResonse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
