@@ -1,5 +1,6 @@
 package intelligent_bank_msa.gatewayservice.filter;
 
+import intelligent_bank_msa.gatewayservice.filter.constants.AuthorizationConstant;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -35,14 +36,14 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             ServerHttpRequest request = exchange.getRequest();
 
             if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                return onError(exchange, "No Authorization Header!");
+                return onError(exchange, AuthorizationConstant.NO_AUTH_HEADER_MESSAGE);
             }
 
             String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-            String accessToken = authorizationHeader.replace("Bearer", "");
+            String accessToken = authorizationHeader.replace(AuthorizationConstant.BEARER, "");
 
             if (!isJwtValid(accessToken)) {
-                return onError(exchange, "Token is not Valid!");
+                return onError(exchange, AuthorizationConstant.NOT_VALID_MESSAGE);
             }
 
             return chain.filter(exchange);
