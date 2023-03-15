@@ -23,16 +23,18 @@ public class CustomUserDetailService implements UserDetailsService {
 
     private UserDetails createUserDetails(Member member) {
         if (member.getAuth() == Role.ADMIN) {
+            String ADMIN_ROLE = "ADMIN";
             return User.builder()
                     .username(member.getEmail())
                     .password(member.getPassword())
-                    .roles("ADMIN")
+                    .roles(ADMIN_ROLE)
                     .build();
         } else {
+            String MEMBER_ROLE = "MEMBER";
             return User.builder()
                     .username(member.getEmail())
                     .password(member.getPassword())
-                    .roles("MEMBER")
+                    .roles(MEMBER_ROLE)
                     .build();
         }
     }
