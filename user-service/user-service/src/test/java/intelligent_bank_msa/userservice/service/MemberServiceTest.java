@@ -1,9 +1,8 @@
 package intelligent_bank_msa.userservice.service;
 
 import intelligent_bank_msa.userservice.dto.MemberSignupRequest;
-import intelligent_bank_msa.userservice.domain.Member;
 import intelligent_bank_msa.userservice.domain.Role;
-import intelligent_bank_msa.userservice.validator.MemberPasswordValidator;
+import intelligent_bank_msa.userservice.validator.MemberValidator;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,6 +15,9 @@ class MemberServiceTest {
 
     @Autowired
     MemberService memberService;
+
+    @Autowired
+    MemberValidator memberValidator;
 
     @Autowired
     EntityManager em;
@@ -63,15 +65,12 @@ class MemberServiceTest {
 
         //when
         String newPassword = "1234";
-        Member member = memberService.getMemberEntity(email);
-        Long memberId = member.getId();
-        memberService.updatePassword(memberId, newPassword);
+        memberService.updatePassword(newPassword, email);
         em.flush();
         em.clear();
 
         //then
-        String memberPw = memberService.getMemberEntity(email).getPassword();
-        boolean notMatchingPassword = MemberPasswordValidator.isNotMatchingPassword(newPassword, memberPw);
+        boolean notMatchingPassword = memberValidator.isNotMatchingPassword(newPassword, email);
         Assertions
                 .assertThat(notMatchingPassword)
                 .isFalse();
