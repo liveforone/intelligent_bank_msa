@@ -5,11 +5,10 @@ import intelligent_bank_msa.bankbookservice.controller.constant.BankBookUrl;
 import intelligent_bank_msa.bankbookservice.controller.constant.ControllerLog;
 import intelligent_bank_msa.bankbookservice.controller.restResonse.RestResponse;
 import intelligent_bank_msa.bankbookservice.dto.bankbook.BankBookRequest;
+import intelligent_bank_msa.bankbookservice.dto.bankbook.BankBookResponse;
 import intelligent_bank_msa.bankbookservice.dto.bankbook.SuspendRequest;
-import intelligent_bank_msa.bankbookservice.domain.BankBook;
 import intelligent_bank_msa.bankbookservice.service.BankBookService;
-import intelligent_bank_msa.bankbookservice.utility.BankBookMapper;
-import intelligent_bank_msa.bankbookservice.utility.BankBookPassword;
+import intelligent_bank_msa.bankbookservice.validator.BankBookValidator;
 import intelligent_bank_msa.bankbookservice.utility.CommonUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +23,17 @@ import org.springframework.web.bind.annotation.*;
 public class BankBookController {
 
     private final BankBookService bankBookService;
+    private final BankBookValidator bankBookValidator;
 
     @GetMapping(BankBookUrl.MY_BANK)
     public ResponseEntity<?> myBank(@PathVariable("email") String email) {
-        BankBook bankBook = bankBookService.getBankBookByEmail(email);
+        BankBookResponse bankBook = bankBookService.getBankBookByEmail(email);
 
         if (CommonUtils.isNull(bankBook)) {
             return RestResponse.noBankBook();
         }
 
-        return ResponseEntity.ok(BankBookMapper.entityToDtoDetail(bankBook));
+        return ResponseEntity.ok(bankBook);
     }
 
     @GetMapping(BankBookUrl.CREATE)
@@ -52,7 +52,7 @@ public class BankBookController {
         }
 
         String email = bankBookRequest.getEmail();
-        BankBook bankBook = bankBookService.getBankBookByEmail(email);
+        BankBookResponse bankBook = bankBookService.getBankBookByEmail(email);
 
         if (!CommonUtils.isNull(bankBook)) {
             return RestResponse.duplicateBankBook();
@@ -66,16 +66,10 @@ public class BankBookController {
 
     @PatchMapping(BankBookUrl.SUSPEND)
     public ResponseEntity<?> suspendBankBook(@RequestBody SuspendRequest suspendRequest) {
-        BankBook bankBook = bankBookService.getBankBookByEmail(suspendRequest.getEmail());
-
-        if (CommonUtils.isNull(bankBook)) {
-            return RestResponse.noBankBook();
-        }
-
+        String email = suspendRequest.getEmail();
         String inputPassword = suspendRequest.getPassword();
-        String originalPassword = bankBook.getPassword();
-        if (BankBookPassword.isNotMatchPassword(inputPassword, originalPassword)) {
-            return RestResponse.notMatchPassword();
+        if (bankBookValidator.isNullOrNotMatchPassword(inputPassword, email)) {
+            return RestResponse.badRequest();
         }
 
         bankBookService.suspendByEmail(suspendRequest);
@@ -88,16 +82,10 @@ public class BankBookController {
     public ResponseEntity<?> cancelSuspendBankBook(
             @RequestBody SuspendRequest suspendRequest
     ) {
-        BankBook bankBook = bankBookService.getBankBookByEmail(suspendRequest.getEmail());
-
-        if (CommonUtils.isNull(bankBook)) {
-            return RestResponse.noBankBook();
-        }
-
+        String email = suspendRequest.getEmail();
         String inputPassword = suspendRequest.getPassword();
-        String originalPassword = bankBook.getPassword();
-        if (BankBookPassword.isNotMatchPassword(inputPassword, originalPassword)) {
-            return RestResponse.notMatchPassword();
+        if (bankBookValidator.isNullOrNotMatchPassword(inputPassword, email)) {
+            return RestResponse.badRequest();
         }
 
         bankBookService.cancelSuspendByEmail(suspendRequest);

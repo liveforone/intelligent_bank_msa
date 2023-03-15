@@ -37,17 +37,17 @@ public class RestResponse {
         return ResponseEntity.ok(ResponseMessage.CREATE_SUCCESS.getValue());
     }
 
-    public static ResponseEntity<?> notMatchPassword() {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ResponseMessage.WRONG_PASSWORD.getValue());
-    }
-
     public static ResponseEntity<?> suspendSuccess() {
         return ResponseEntity.ok(ResponseMessage.SUSPEND.getValue());
     }
 
     public static ResponseEntity<?> cancelSuspendSuccess() {
         return ResponseEntity.ok(ResponseMessage.CANCEL_SUSPEND.getValue());
+    }
+
+    public static ResponseEntity<?> badRequest() {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ResponseMessage.BAD_REQUEST.getValue());
     }
 }

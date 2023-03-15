@@ -4,7 +4,7 @@ import intelligent_bank_msa.bankbookservice.controller.constant.BankBookUrl;
 import intelligent_bank_msa.bankbookservice.dto.feign.*;
 import intelligent_bank_msa.bankbookservice.domain.BankBook;
 import intelligent_bank_msa.bankbookservice.service.BankBookService;
-import intelligent_bank_msa.bankbookservice.utility.BankBookPassword;
+import intelligent_bank_msa.bankbookservice.validator.BankBookValidator;
 import intelligent_bank_msa.bankbookservice.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BankBookFeignController {
 
     private final BankBookService bankBookService;
+    private final BankBookValidator bankBookValidator;
 
     @PostMapping(BankBookUrl.INFO_ATM)
     public ResponseEntity<?> bankInfoAtm(@RequestBody AtmRequest atmRequest) {
@@ -29,7 +30,7 @@ public class BankBookFeignController {
 
         String inputPassword = atmRequest.getPassword();
         String originalPassword = bankBook.getPassword();
-        if (BankBookPassword.isNotMatchPassword(inputPassword, originalPassword)) {
+        if (bankBookValidator.isNotMatchPassword(inputPassword, originalPassword)) {
             atmDto.setPasswordStatus(PasswordStatus.FALSE);
         } else {
             atmDto.setPasswordStatus(PasswordStatus.TRUE);
@@ -52,7 +53,7 @@ public class BankBookFeignController {
 
         String inputPassword = remitRequest.getPassword();
         String originalPassword = senderBankBook.getPassword();
-        if (BankBookPassword.isNotMatchPassword(inputPassword, originalPassword)) {
+        if (bankBookValidator.isNotMatchPassword(inputPassword, originalPassword)) {
             remitDto.setPasswordStatus(PasswordStatus.FALSE);
         } else {
             remitDto.setPasswordStatus(PasswordStatus.TRUE);

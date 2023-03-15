@@ -1,4 +1,4 @@
-package intelligent_bank_msa.bankbookservice.utility;
+package intelligent_bank_msa.bankbookservice.service.util;
 
 import intelligent_bank_msa.bankbookservice.dto.bankbook.BankBookRequest;
 import intelligent_bank_msa.bankbookservice.dto.bankbook.BankBookResponse;
