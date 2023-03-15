@@ -17,7 +17,7 @@ public class BankBookFeignController {
 
     private final BankBookService bankBookService;
 
-    @PostMapping("/bank-info/atm")
+    @PostMapping(BankBookUrl.INFO_ATM)
     public ResponseEntity<?> bankInfoAtm(@RequestBody AtmRequest atmRequest) {
         BankBook bankBook = bankBookService.getBankBookByBankBookNum(atmRequest.getBankBookNum());
 
@@ -37,7 +37,7 @@ public class BankBookFeignController {
         return ResponseEntity.ok(atmDto);
     }
 
-    @PostMapping("/bank-info/remit")
+    @PostMapping(BankBookUrl.INFO_REMIT)
     public ResponseEntity<?> bankInfoRemit(@RequestBody RemitRequest remitRequest) {
         BankBook senderBankBook = bankBookService.getBankBookByBankBookNum(remitRequest.getSenderBankBookNum());
         BankBook receiverBankBook = bankBookService.getBankBookByBankBookNum(remitRequest.getReceiverBankBookNum());

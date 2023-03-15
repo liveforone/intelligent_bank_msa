@@ -25,8 +25,8 @@ public class BankBookController {
 
     private final BankBookService bankBookService;
 
-    @GetMapping("/my-bank/{email}")
-    public ResponseEntity<?> myBank(@PathVariable String email) {
+    @GetMapping(BankBookUrl.MY_BANK)
+    public ResponseEntity<?> myBank(@PathVariable("email") String email) {
         BankBook bankBook = bankBookService.getBankBookByEmail(email);
 
         if (CommonUtils.isNull(bankBook)) {
@@ -38,12 +38,12 @@ public class BankBookController {
         return ResponseEntity.ok(BankBookMapper.entityToDtoDetail(bankBook));
     }
 
-    @GetMapping("/create")
+    @GetMapping(BankBookUrl.CREATE)
     public ResponseEntity<?> postBankBookPage() {
         return ResponseEntity.ok("통장 개설 페이지입니다.");
     }
 
-    @PostMapping("/create")
+    @PostMapping(BankBookUrl.CREATE)
     @LogExecutionTime
     public ResponseEntity<?> postBankBook(
             @RequestBody @Valid BankBookRequest bankBookRequest,
@@ -73,7 +73,7 @@ public class BankBookController {
         return ResponseEntity.ok("통장이 정상적으로 개설되었습니다.\n감사합니다");
     }
 
-    @PatchMapping("/suspend")
+    @PatchMapping(BankBookUrl.SUSPEND)
     public ResponseEntity<?> suspendBankBook(@RequestBody SuspendRequest suspendRequest) {
         BankBook bankBook = bankBookService.getBankBookByEmail(suspendRequest.getEmail());
 
@@ -97,7 +97,7 @@ public class BankBookController {
         return ResponseEntity.ok("통장이 성공적으로 정지 되었습니다.");
     }
 
-    @PatchMapping("/cancel-suspend")
+    @PatchMapping(BankBookUrl.CANCEL_SUSPEND)
     public ResponseEntity<?> cancelSuspendBankBook(
             @RequestBody SuspendRequest suspendRequest
     ) {
