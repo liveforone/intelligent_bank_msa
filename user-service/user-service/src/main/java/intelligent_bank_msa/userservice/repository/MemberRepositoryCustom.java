@@ -9,5 +9,7 @@ public interface MemberRepositoryCustom {
 
     void updateEmail(String oldEmail, String newEmail);
 
-    void updatePassword(Long id, String password);
+    void updatePassword(String password, String email);
+
+    void deleteByEmail(String email);
 }

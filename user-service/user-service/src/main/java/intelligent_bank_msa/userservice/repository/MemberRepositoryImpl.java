@@ -11,30 +11,31 @@ import org.springframework.stereotype.Repository;
 public class MemberRepositoryImpl implements MemberRepositoryCustom{
 
     private final JPAQueryFactory queryFactory;
+    QMember member = QMember.member;
 
     public Member findByEmail(String email) {
-        QMember member = QMember.member;
-
         return queryFactory.selectFrom(member)
                 .where(member.email.eq(email))
                 .fetchOne();
     }
 
     public void updateEmail(String oldEmail, String newEmail) {
-        QMember member = QMember.member;
-
         queryFactory.update(member)
                 .set(member.email, newEmail)
                 .where(member.email.eq(oldEmail))
                 .execute();
     }
 
-    public void updatePassword(Long id, String password) {
-        QMember member = QMember.member;
-
+    public void updatePassword(String password, String email) {
         queryFactory.update(member)
                 .set(member.password, password)
-                .where(member.id.eq(id))
+                .where(member.email.eq(email))
+                .execute();
+    }
+
+    public void deleteByEmail(String email) {
+        queryFactory.delete(member)
+                .where(member.email.eq(email))
                 .execute();
     }
 }
