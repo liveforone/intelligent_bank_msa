@@ -13,10 +13,12 @@ import java.time.Duration;
 @Component
 public class CircuitBreaker {
 
+    private static final int TIME_OUT_DURATION = 4;
+
     @Bean
     public Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer() {
         TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.custom()
-                .timeoutDuration(Duration.ofSeconds(4))
+                .timeoutDuration(Duration.ofSeconds(TIME_OUT_DURATION))
                 .build();
 
         return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
