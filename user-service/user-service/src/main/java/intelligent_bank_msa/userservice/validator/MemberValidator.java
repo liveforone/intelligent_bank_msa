@@ -1,30 +1,30 @@
 package intelligent_bank_msa.userservice.validator;
 
-import intelligent_bank_msa.userservice.dto.MemberLoginRequest;
 import intelligent_bank_msa.userservice.domain.Member;
-import intelligent_bank_msa.userservice.service.MemberService;
+import intelligent_bank_msa.userservice.repository.MemberRepository;
 import intelligent_bank_msa.userservice.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class MemberValidator {
 
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
-    public boolean isDuplicateEmail(String email) {
-        Member member = memberService.getMemberEntity(email);
+    static BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        return !CommonUtils.isNull(member);
+    public boolean isNotMatchingPassword(String inputPassword, String email) {
+        Member foundMember = memberRepository.findByEmail(email);
+        String originalPassword = foundMember.getPassword();
+
+        return !passwordEncoder.matches(inputPassword, originalPassword);
     }
 
-    public boolean isNotRightMemberInfo(MemberLoginRequest memberLoginRequest) {
-        Member foundMember = memberService.getMemberEntity(memberLoginRequest.getEmail());
+    public boolean isDuplicateEmail(String email) {
+        Member member = memberRepository.findByEmail(email);
 
-        return CommonUtils.isNull(foundMember)
-                || MemberPasswordValidator.isNotMatchingPassword(
-                memberLoginRequest.getPassword(),
-                foundMember.getPassword());
+        return !CommonUtils.isNull(member);
     }
 }
