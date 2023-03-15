@@ -1,5 +1,6 @@
 package intelligent_bank_msa.userservice.jwt;
 
+import intelligent_bank_msa.userservice.jwt.constant.JwtConstant;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -38,9 +39,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     * Request Header 에서 토큰 정보 추출
      */
     public static String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+        String bearerToken = request.getHeader(JwtConstant.HEADER);
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(JwtConstant.BEARER_TOKEN)) {
             return bearerToken.substring(7);
         }
         return null;

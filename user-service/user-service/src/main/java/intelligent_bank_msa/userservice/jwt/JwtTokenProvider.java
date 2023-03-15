@@ -1,5 +1,6 @@
 package intelligent_bank_msa.userservice.jwt;
 
+import intelligent_bank_msa.userservice.jwt.constant.JwtConstant;
 import intelligent_bank_msa.userservice.utility.CommonUtils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -40,22 +41,22 @@ public class JwtTokenProvider {
 
         long now = (new Date()).getTime();
         //Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 1800000);
+        Date accessTokenExpiresIn = new Date(now + JwtConstant.THIRTY_MINUTE_MS);
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim("auth", authorities)
+                .claim(JwtConstant.CLAIM_NAME, authorities)
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         //Refresh Token 생성
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + 1800000))
+                .setExpiration(new Date(now + JwtConstant.THIRTY_MINUTE_MS))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         return TokenInfo.builder()
-                .grantType("Bearer")
+                .grantType(JwtConstant.BEARER_TOKEN)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -65,13 +66,13 @@ public class JwtTokenProvider {
         //토큰 복호화
         Claims claims = parseClaims(accessToken);
 
-        if (CommonUtils.isNull(claims.get("auth"))) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        if (CommonUtils.isNull(claims.get(JwtConstant.CLAIM_NAME))) {
+            throw new RuntimeException(JwtConstant.NO_AUTH_INFO_TOKEN_MESSAGE);
         }
 
         //클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("auth").toString().split(","))
+                Arrays.stream(claims.get(JwtConstant.CLAIM_NAME).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
@@ -96,13 +97,13 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
+            log.info(JwtConstant.INVALID_MESSAGE, e);
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
+            log.info(JwtConstant.EXPIRED_MESSAGE, e);
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
+            log.info(JwtConstant.UNSUPPORTED_MESSAGE, e);
         } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
+            log.info(JwtConstant.EMPTY_MESSAGE, e);
         }
         return false;
     }
