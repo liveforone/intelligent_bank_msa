@@ -1,5 +1,6 @@
 package intelligent_bank_msa.gatewayservice.filter;
 
+import intelligent_bank_msa.gatewayservice.filter.constants.GlobalTrackerLog;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -31,15 +32,15 @@ public class GlobalTrackerFilter extends AbstractGatewayFilterFactory<GlobalTrac
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            log.info("Global filter base message: {}", config.getBaseMessage());
+            log.info(GlobalTrackerLog.BASE_LOG.getValue(), config.getBaseMessage());
 
             if (config.isPreLogger()) {
-                log.info("Global filter start: request id -> {}", request.getId());
+                log.info(GlobalTrackerLog.START_LOG.getValue(), request.getId());
             }
 
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
                         if (config.isPostLogger()) {
-                            log.info("Global filter end: response code -> {}", response.getStatusCode());
+                            log.info(GlobalTrackerLog.END_LOG.getValue(), response.getStatusCode());
                         }
                     })
             );
