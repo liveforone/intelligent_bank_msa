@@ -1,4 +1,4 @@
-package intelligent_bank_msa.userservice.controller.util;
+package intelligent_bank_msa.userservice.controller.restResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

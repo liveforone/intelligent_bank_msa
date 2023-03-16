@@ -1,4 +1,4 @@
-package intelligent_bank_msa.userservice.controller;
+package intelligent_bank_msa.userservice.controller.constant;
 
 public class MemberUrl {
 

@@ -1,6 +1,6 @@
 package intelligent_bank_msa.userservice.config;
 
-import intelligent_bank_msa.userservice.controller.MemberUrl;
+import intelligent_bank_msa.userservice.controller.constant.MemberUrl;
 import intelligent_bank_msa.userservice.jwt.JwtAuthenticationFilter;
 import intelligent_bank_msa.userservice.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
