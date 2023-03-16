@@ -6,9 +6,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "bankbook-service")
+@FeignClient(name = BankBookUrl.BASE)
 public interface BankBookFeignService {
 
-    @PostMapping("/bank-info/atm")
+    @PostMapping(BankBookUrl.BANK_INFO_ATM)
     BankInfoAtmDto getBankBook(@RequestBody AtmRequest atmRequest);
 }
