@@ -3,6 +3,7 @@ package intelligent_bank_msa.remitservice.controller;
 import intelligent_bank_msa.remitservice.aop.stopwatch.LogExecutionTime;
 import intelligent_bank_msa.remitservice.controller.constant.ControllerLog;
 import intelligent_bank_msa.remitservice.controller.constant.RemitUrl;
+import intelligent_bank_msa.remitservice.controller.restResponse.RestResponse;
 import intelligent_bank_msa.remitservice.dto.feign.BankInfoRemitDto;
 import intelligent_bank_msa.remitservice.dto.feign.PasswordStatus;
 import intelligent_bank_msa.remitservice.dto.remit.RemitRequest;
@@ -14,7 +15,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,12 +39,7 @@ public class RemitController {
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
-            String errorMessage = Objects
-                    .requireNonNull(bindingResult.getFieldError())
-                    .getDefaultMessage();
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(errorMessage);
+            return RestResponse.validError(bindingResult);
         }
 
         BankInfoRemitDto remitDto = circuitBreakerFactory
@@ -54,37 +49,27 @@ public class RemitController {
         );
 
         if (CommonUtils.isNull(remitDto)) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("존재하지 않는 통장 번호입니다.");
+            return RestResponse.noBankBook();
         }
 
         if (BankBookStateCheck.isSuspendSenderBank(remitDto.getSenderBankBookState())) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("정지된 통장입니다.\n정지된 통장으로는 송금이 불가능합니다.");
+            return RestResponse.suspendBank();
         }
 
         if (BankBookStateCheck.isSuspendReceiverBank(remitDto.getReceiverBankBookState())) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("정지된 통장입니다.\n정지된 통장으로는 송금이 불가능합니다.");
+            return RestResponse.suspendBank();
         }
 
         if (Objects.equals(
                 remitDto.getPasswordStatus().name(),
                 PasswordStatus.FALSE.name())
         ) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("비밀번호가 일치하지 않습니다.");
+            return RestResponse.wrongPassword();
         }
 
         remitService.remit(remitRequest);
         log.info(ControllerLog.REMIT_SUCCESS.getValue());
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body("송금 완료되었습니다.");
+        return RestResponse.remitSuccess();
     }
 }
