@@ -5,6 +5,7 @@ import intelligent_bank_msa.remitservice.dto.record.RecordState;
 import intelligent_bank_msa.remitservice.dto.record.RecordStatus;
 import intelligent_bank_msa.remitservice.dto.remit.RemitRequest;
 import intelligent_bank_msa.remitservice.mq.RemitProducer;
+import intelligent_bank_msa.remitservice.service.constant.ServiceLog;
 import intelligent_bank_msa.remitservice.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,8 @@ public class RemitService {
 
 
         remitProducer.requestDecreaseBalance(remitRequest);
-        log.info("통장 번호 : " + senderBankBookNum + " 출금 금액 : " + inputMoney);
+        log.info(ServiceLog.BANK_NUM.getValue() + senderBankBookNum +
+                ServiceLog.WITHDRAW_SUM.getValue() + inputMoney);
 
         RecordRequest senderRequest = RecordRequest.builder()
                 .title(RecordStatus.WITHDRAW_REMIT.getValue() + receiverBankBookNum)
@@ -48,7 +50,8 @@ public class RemitService {
         String receiverBankBookNum = remitRequest.getReceiverBankBookNum();
 
         remitProducer.requestIncreaseBalance(remitRequest);
-        log.info("통장 번호 : " + receiverBankBookNum + " 입금 금액 : " + inputMoney);
+        log.info(ServiceLog.BANK_NUM.getValue() + receiverBankBookNum +
+                ServiceLog.DEPOSIT_SUM.getValue() + inputMoney);
 
         RecordRequest receiverRequest = RecordRequest.builder()
                 .title(RecordStatus.DEPOSIT_REMIT.getValue() + senderBankBookNum)
