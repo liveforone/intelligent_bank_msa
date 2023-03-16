@@ -5,7 +5,7 @@ import intelligent_bank_msa.atmservice.controller.constant.AtmUrl;
 import intelligent_bank_msa.atmservice.controller.constant.ControllerLog;
 import intelligent_bank_msa.atmservice.controller.restResponse.RestResponse;
 import intelligent_bank_msa.atmservice.dto.atm.AtmRequest;
-import intelligent_bank_msa.atmservice.dto.feign.PasswordStatus;
+import intelligent_bank_msa.atmservice.dto.feign.constant.PasswordStatus;
 import intelligent_bank_msa.atmservice.dto.feign.BankInfoAtmDto;
 import intelligent_bank_msa.atmservice.feign.BankBookFeignService;
 import intelligent_bank_msa.atmservice.service.AtmService;
