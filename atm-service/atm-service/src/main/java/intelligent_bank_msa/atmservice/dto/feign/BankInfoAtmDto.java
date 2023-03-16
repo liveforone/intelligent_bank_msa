@@ -1,5 +1,7 @@
 package intelligent_bank_msa.atmservice.dto.feign;
 
+import intelligent_bank_msa.atmservice.dto.feign.constant.BankBookState;
+import intelligent_bank_msa.atmservice.dto.feign.constant.PasswordStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

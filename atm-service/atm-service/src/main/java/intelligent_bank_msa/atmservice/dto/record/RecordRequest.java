@@ -1,5 +1,6 @@
 package intelligent_bank_msa.atmservice.dto.record;
 
+import intelligent_bank_msa.atmservice.dto.record.constant.RecordState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
