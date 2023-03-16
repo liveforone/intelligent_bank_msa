@@ -1,6 +1,8 @@
 package intelligent_bank_msa.remitservice.controller;
 
 import intelligent_bank_msa.remitservice.aop.stopwatch.LogExecutionTime;
+import intelligent_bank_msa.remitservice.controller.constant.ControllerLog;
+import intelligent_bank_msa.remitservice.controller.constant.RemitUrl;
 import intelligent_bank_msa.remitservice.dto.feign.BankInfoRemitDto;
 import intelligent_bank_msa.remitservice.dto.feign.PasswordStatus;
 import intelligent_bank_msa.remitservice.dto.remit.RemitRequest;
@@ -30,7 +32,7 @@ public class RemitController {
     private final RemitService remitService;
     private final CircuitBreakerFactory<?, ?> circuitBreakerFactory;
 
-    @PostMapping("/remit")
+    @PostMapping(RemitUrl.REMIT)
     @LogExecutionTime
     public ResponseEntity<?> remit(
             @RequestBody @Valid RemitRequest remitRequest,
@@ -46,7 +48,7 @@ public class RemitController {
         }
 
         BankInfoRemitDto remitDto = circuitBreakerFactory
-                .create("remit-service-circuit")
+                .create(ControllerLog.REMIT_CIRCUIT.getValue())
                 .run(() -> bankBookFeignService.getBankBook(remitRequest),
                 throwable -> null
         );
@@ -79,7 +81,7 @@ public class RemitController {
         }
 
         remitService.remit(remitRequest);
-        log.info("송금 완료");
+        log.info(ControllerLog.REMIT_SUCCESS.getValue());
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
