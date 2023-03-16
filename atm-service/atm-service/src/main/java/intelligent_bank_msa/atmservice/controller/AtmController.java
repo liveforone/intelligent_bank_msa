@@ -31,7 +31,7 @@ public class AtmController {
     private final BankBookFeignService bankBookFeignService;
     private final CircuitBreakerFactory<?, ?> circuitBreakerFactory;
 
-    @PostMapping("/deposit")
+    @PostMapping(AtmUrl.DEPOSIT)
     @LogExecutionTime
     public ResponseEntity<?> depositAtm(
             @RequestBody @Valid AtmRequest atmRequest,
@@ -81,7 +81,7 @@ public class AtmController {
                 .body("ATM 입금에 성공하셨습니다");
     }
 
-    @PostMapping("/withdraw")
+    @PostMapping(AtmUrl.WITHDRAW)
     @LogExecutionTime
     public ResponseEntity<?> withdrawAtm(
             @RequestBody @Valid AtmRequest atmRequest,
