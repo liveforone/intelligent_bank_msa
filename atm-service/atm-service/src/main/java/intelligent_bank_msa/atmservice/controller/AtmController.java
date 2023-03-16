@@ -2,6 +2,8 @@ package intelligent_bank_msa.atmservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import intelligent_bank_msa.atmservice.aop.stopwatch.LogExecutionTime;
+import intelligent_bank_msa.atmservice.controller.constant.AtmUrl;
+import intelligent_bank_msa.atmservice.controller.constant.ControllerLog;
 import intelligent_bank_msa.atmservice.dto.atm.AtmRequest;
 import intelligent_bank_msa.atmservice.dto.feign.PasswordStatus;
 import intelligent_bank_msa.atmservice.dto.feign.BankInfoAtmDto;
@@ -47,7 +49,7 @@ public class AtmController {
         }
 
         BankInfoAtmDto bankBook = circuitBreakerFactory
-                .create("atm-service-circuit")
+                .create(ControllerLog.ATM_CIRCUIT.getValue())
                 .run(() -> bankBookFeignService.getBankBook(atmRequest),
                         throwable -> null
                 );
@@ -74,7 +76,7 @@ public class AtmController {
         }
 
         atmService.depositAtm(atmRequest);
-        log.info("ATM 입금 성공");
+        log.info(ControllerLog.DEPOSIT_SUCCESS.getValue());
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -97,7 +99,7 @@ public class AtmController {
         }
 
         BankInfoAtmDto bankBook = circuitBreakerFactory
-                .create("atm-service-circuit")
+                .create(ControllerLog.ATM_CIRCUIT.getValue())
                 .run(() -> bankBookFeignService.getBankBook(atmRequest),
                         throwable -> null
                 );
@@ -124,7 +126,7 @@ public class AtmController {
         }
 
         atmService.withdrawAtm(atmRequest);
-        log.info("ATM 출금 성공");
+        log.info(ControllerLog.WITHDRAW_SUCCESS.getValue());
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
