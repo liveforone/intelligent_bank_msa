@@ -1,4 +1,4 @@
-package intelligent_bank_msa.atmservice.controller;
+package intelligent_bank_msa.atmservice.controller.constant;
 
 public class AtmUrl {
 
