@@ -1,4 +1,4 @@
-package intelligent_bank_msa.calculateservice.utility;
+package intelligent_bank_msa.calculateservice.service.util;
 
 
 import intelligent_bank_msa.calculateservice.dto.calculate.CalculateResponse;

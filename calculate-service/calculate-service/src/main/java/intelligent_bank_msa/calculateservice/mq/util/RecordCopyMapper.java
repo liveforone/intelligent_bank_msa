@@ -1,4 +1,4 @@
-package intelligent_bank_msa.calculateservice.utility;
+package intelligent_bank_msa.calculateservice.mq.util;
 
 import intelligent_bank_msa.calculateservice.dto.record.RecordRequest;
 import intelligent_bank_msa.calculateservice.model.RecordCopy;

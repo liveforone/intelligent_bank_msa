@@ -8,7 +8,7 @@ import intelligent_bank_msa.calculateservice.mq.constant.KafkaLog;
 import intelligent_bank_msa.calculateservice.mq.constant.Topic;
 import intelligent_bank_msa.calculateservice.repository.RecordCopyRepository;
 import intelligent_bank_msa.calculateservice.utility.CommonUtils;
-import intelligent_bank_msa.calculateservice.utility.RecordCopyMapper;
+import intelligent_bank_msa.calculateservice.mq.util.RecordCopyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
