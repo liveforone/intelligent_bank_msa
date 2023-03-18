@@ -53,6 +53,7 @@
 * [페이징 성능을 높일 순 없을까?](https://github.com/liveforone/intelligent_bank_msa/wiki/%ED%8E%98%EC%9D%B4%EC%A7%95-%EC%84%B1%EB%8A%A5%EC%9D%84-%EB%86%92%EC%9D%BC-%EC%88%9C-%EC%97%86%EC%9D%84%EA%B9%8C%3F)
 ### h. 리팩토링 히스토리
 * [리팩토링1 - 단독 repo](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%811---%EB%8B%A8%EB%8F%85-repo)
+* [리팩토링2 - 하드코딩 최소화와 계층 나누기](https://github.com/liveforone/intelligent_bank_msa/wiki/%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%812---%ED%95%98%EB%93%9C%EC%BD%94%EB%94%A9-%EC%B5%9C%EC%86%8C%ED%99%94%EC%99%80-%EA%B3%84%EC%B8%B5-%EB%82%98%EB%88%84%EA%B8%B0)
 
 # 5. 스타일 가이드
 * 스타일 가이드는 필자가 생각하는 좋은 코드와 필자의 클린코드 철학이 담긴 문서이다.
