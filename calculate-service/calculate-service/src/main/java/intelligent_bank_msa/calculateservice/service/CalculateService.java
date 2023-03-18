@@ -3,13 +3,13 @@ package intelligent_bank_msa.calculateservice.service;
 import intelligent_bank_msa.calculateservice.dto.bankbook.InterestRequest;
 import intelligent_bank_msa.calculateservice.dto.calculate.CalculateResponse;
 import intelligent_bank_msa.calculateservice.dto.record.RecordRequest;
+import intelligent_bank_msa.calculateservice.dto.record.constant.RecordStatus;
 import intelligent_bank_msa.calculateservice.model.RecordState;
 import intelligent_bank_msa.calculateservice.mq.CalculateProducer;
 import intelligent_bank_msa.calculateservice.repository.CalculateRepository;
-import intelligent_bank_msa.calculateservice.utility.CalculateMapper;
+import intelligent_bank_msa.calculateservice.service.util.CalculateMapper;
 import intelligent_bank_msa.calculateservice.utility.CommonUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +17,13 @@ import java.time.Month;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 @Transactional(readOnly = true)
 public class CalculateService {
 
     private final CalculateRepository calculateRepository;
     private final CalculateProducer calculateProducer;
+
+    private static final double INTEREST = 0.01;
 
     public CalculateResponse calculateThisMonth(String bankBookNum) {
         int nowYear = CommonUtils.createNowYear();
@@ -80,17 +81,16 @@ public class CalculateService {
         long profit =  sumIncome + sumExpense;
 
         if (profit > 0) {
-            long interest = (long) (profit * 0.01);
+            long interest = (long) (profit * INTEREST);
 
             InterestRequest interestRequest = InterestRequest.makeInterestRequest(
                     bankBookNum,
                     interest
             );
             calculateProducer.requestIncreaseBalance(interestRequest);
-            log.info("이자 정산 완료");
 
             RecordRequest depositRequest = RecordRequest.builder()
-                    .title("[입금] 연 이자 지급")
+                    .title(RecordStatus.INTEREST.getValue())
                     .bankBookNum(bankBookNum)
                     .money(interest)
                     .recordState(RecordState.INCOME)
