@@ -1,6 +1,7 @@
 package intelligent_bank_msa.recordservice.controller;
 
 import intelligent_bank_msa.recordservice.aop.stopwatch.LogExecutionTime;
+import intelligent_bank_msa.recordservice.controller.constant.ParamConstant;
 import intelligent_bank_msa.recordservice.dto.RecordResponse;
 import intelligent_bank_msa.recordservice.service.RecordService;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,12 @@ public class RecordController {
 
     private final RecordService recordService;
 
-    @GetMapping("/my-record/{bankBookNum}")
+    @GetMapping(RecordUrl.MY_RECORD)
     @LogExecutionTime
     public ResponseEntity<?> getMyRecord(
             @PathVariable String bankBookNum,
-            @RequestParam(name = "lastId") Long lastId,
-            @RequestParam(name = "pageSize") int pageSize
+            @RequestParam(name = ParamConstant.LAST_ID) Long lastId,
+            @RequestParam(name = ParamConstant.PAGE_SIZE) int pageSize
     ) {
         List<RecordResponse> records = recordService.getRecordsByBankBookNum(bankBookNum, lastId, pageSize);
 
